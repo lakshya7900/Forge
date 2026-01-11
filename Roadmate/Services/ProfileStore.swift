@@ -6,31 +6,50 @@ import Combine
 final class ProfileStore: ObservableObject {
     @Published var profile: UserProfile
 
-    private let fileURL: URL
+    private let fileURL: URL?
+    private let persistenceEnabled: Bool
 
+    // MARK: - NORMAL (app runtime)
     init(username: String) {
-        // File name based on username so multiple test accounts don’t overwrite each other
-        let safe = username.replacingOccurrences(of: "[^a-zA-Z0-9_-]+", with: "-", options: .regularExpression)
-        self.fileURL = ProfileStore.makeFileURL(filename: "profile-\(safe).json")
+        self.persistenceEnabled = true
 
-        if let loaded = ProfileStore.load(from: fileURL) {
+        let safe = username.replacingOccurrences(
+            of: "[^a-zA-Z0-9_-]+",
+            with: "-",
+            options: .regularExpression
+        )
+
+        let url = Self.makeFileURL(filename: "profile-\(safe).json")
+        self.fileURL = url
+
+        if let loaded = Self.load(from: url) {
             self.profile = loaded
         } else {
-            self.profile = UserProfile(
-                displayName: username,
-                headline: "",
-                skills: []
-            )
-            ProfileStore.save(self.profile, to: fileURL)
+            // Create default profile
+            self.profile = UserProfile.defaultProfile(for: username)
+            save()
         }
     }
 
+    // MARK: - PREVIEW (no disk)
+    static func preview(profile: UserProfile) -> ProfileStore {
+        let store = ProfileStore(persistenceEnabled: false)
+        store.profile = profile
+        return store
+    }
+
+    private init(persistenceEnabled: Bool) {
+        self.persistenceEnabled = persistenceEnabled
+        self.fileURL = nil
+        self.profile = UserProfile.defaultProfile(for: "preview-user")
+    }
+
     func save() {
-        ProfileStore.save(profile, to: fileURL)
+        guard persistenceEnabled, let fileURL else { return }
+        Self.save(profile, to: fileURL)
     }
 
     // MARK: - Helpers
-
     private static func makeFileURL(filename: String) -> URL {
         let fm = FileManager.default
         let base = (try? fm.url(

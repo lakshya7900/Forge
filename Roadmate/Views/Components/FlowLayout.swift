@@ -1,6 +1,16 @@
+//
+//  FlowLayout.swift
+//  Roadmate
+//
+//  Created by Lakshya Agarwal on 1/10/26.
+//
+
+
 import SwiftUI
 
-/// A simple wrapping layout (chips/tags) that is safe on macOS SwiftUI.
+/// A wrapping "chip" layout that is safe on macOS SwiftUI.
+/// Key detail: if the width proposal is nil (unspecified), we pick a conservative width
+/// so we never under-report height (which causes bleeding outside the card).
 struct FlowLayout: Layout {
     var spacing: CGFloat = 8
 
@@ -13,26 +23,39 @@ struct FlowLayout: Layout {
         subviews: Subviews,
         cache: inout ()
     ) -> CGSize {
-        let maxWidth = proposal.width ?? 600
+        // Measure subviews once
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+
+        // ✅ Critical: If width is unspecified, use a conservative width:
+        // the max single-item width, so we won't underestimate height.
+        let maxItemWidth = sizes.map(\.width).max() ?? 0
+        let maxWidth = proposal.width ?? maxItemWidth
 
         var x: CGFloat = 0
         var y: CGFloat = 0
         var rowHeight: CGFloat = 0
+        var usedWidth: CGFloat = 0
 
-        for s in subviews {
-            let size = s.sizeThatFits(.unspecified)
-
+        for size in sizes {
+            // Wrap if next item would overflow
             if x > 0, x + size.width > maxWidth {
+                usedWidth = max(usedWidth, x - spacing) // last row width
                 x = 0
                 y += rowHeight + spacing
                 rowHeight = 0
             }
 
-            x += size.width + (x > 0 ? spacing : 0)
+            x += size.width + spacing
             rowHeight = max(rowHeight, size.height)
         }
 
-        return CGSize(width: maxWidth, height: y + rowHeight)
+        usedWidth = max(usedWidth, x > 0 ? (x - spacing) : 0)
+
+        // If proposal.width was nil, report our measured width; otherwise respect proposal width.
+        let finalWidth = proposal.width ?? usedWidth
+        let finalHeight = y + rowHeight
+
+        return CGSize(width: finalWidth, height: finalHeight)
     }
 
     func placeSubviews(

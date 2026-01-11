@@ -38,16 +38,8 @@ struct SignupView: View {
 
                 VStack(spacing: 12) {
                     TextField("Username", text: $username)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .glassEffect(.clear, in: .rect(cornerRadius: 12))
 
                     SecureField("Password", text: $password)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .glassEffect(.clear, in: .rect(cornerRadius: 12))
                 }
 
                 if let errorMessage {
@@ -65,7 +57,6 @@ struct SignupView: View {
                             .frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(.glassProminent)
                 .disabled(isLoading)
                 .keyboardShortcut(.defaultAction)
                 .clipShape(RoundedRectangle(cornerRadius: 10))

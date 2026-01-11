@@ -1,9 +1,20 @@
+//
+//  MemberRow.swift
+//  Roadmate
+//
+//  Created by Lakshya Agarwal on 1/10/26.
+//
+
 import SwiftUI
 
 struct MemberRow: View {
     let member: ProjectMember
+    let roleOptions: [AddMemberView.RoleOption]
+    
     let isOwner: Bool
-    let onRoleChange: (ProjectRole) -> Void
+
+    let onChangeRole: (String) -> Void
+    let onRequestAddRole: () -> Void
     let onDelete: (() -> Void)?
 
     var body: some View {
@@ -15,6 +26,7 @@ struct MemberRow: View {
                     Text(member.username)
                         .font(.headline)
 
+                    
                     if isOwner {
                         Text("Owner")
                             .font(.caption)
@@ -26,30 +38,36 @@ struct MemberRow: View {
                     }
                 }
 
-                Text(member.role.label)
+                Text(member.displayRole)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
 
             Spacer()
-
-            if !isOwner {
-                Picker("", selection: Binding(
-                    get: { member.role },
-                    set: { onRoleChange($0) }
-                )) {
-                    ForEach(ProjectRole.allCases.filter { $0 != .owner }) { r in
-                        Text(r.label).tag(r)
-                    }
+            
+            Menu {
+                // predefined + custom
+                ForEach(roleOptions) { opt in
+                    Button(opt.label) { onChangeRole(opt.key) }
                 }
-                .labelsHidden()
-                .frame(width: 160)
+                Divider()
+                Button("Add Custom Role…") { onRequestAddRole() }
+            } label: {
+                HStack(spacing: 6) {
+                    Text(member.displayRole)
+                        .lineLimit(1)
+                    Image(systemName: "chevron.down")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
             }
+            .buttonStyle(.plain)
 
             if let onDelete, !isOwner {
-                Button(role: .destructive) {
-                    onDelete()
-                } label: {
+                Button(role: .destructive) { onDelete() } label: {
                     Image(systemName: "trash")
                 }
                 .buttonStyle(.borderless)
@@ -63,25 +81,13 @@ struct MemberRow: View {
     private var avatar: some View {
         ZStack {
             Circle()
-                .fill(roleColor.opacity(0.18))
+                .fill(.secondary.opacity(0.18))
                 .frame(width: 36, height: 36)
 
             Text(initials(member.username))
                 .font(.caption)
                 .fontWeight(.semibold)
-                .foregroundStyle(roleColor)
-        }
-        .accessibilityHidden(true)
-    }
-
-    private var roleColor: Color {
-        switch member.role {
-        case .owner: return .purple
-        case .frontend: return .blue
-        case .backend: return .green
-        case .fullstack: return .teal
-        case .pm: return .orange
-        case .qa: return .pink
+                .foregroundStyle(.secondary)
         }
     }
 

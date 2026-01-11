@@ -1,17 +1,31 @@
+//
+//  ProjectStore.swift
+//  Roadmate
+//
+//  Created by Lakshya Agarwal on 1/9/26.
+//
+
+
 import Foundation
 import SwiftUI
+import Combine
 
 @MainActor
 final class ProjectStore: ObservableObject {
     @Published var projects: [Project] = []
 
-    private let fileURL: URL
+    private let fileURL: URL?
+    private let persistenceEnabled: Bool
 
+    // MARK: - NORMAL (app runtime)
     init(username: String) {
-        let safe = username.replacingOccurrences(of: "[^a-zA-Z0-9_-]+", with: "-", options: .regularExpression)
-        self.fileURL = ProjectStore.makeFileURL(filename: "projects-\(safe).json")
+        self.persistenceEnabled = true
 
-        if let loaded = ProjectStore.load(from: fileURL) {
+        let safe = username.replacingOccurrences(of: "[^a-zA-Z0-9_-]+", with: "-", options: .regularExpression)
+        let url = ProjectStore.makeFileURL(filename: "projects-\(safe).json")
+        self.fileURL = url
+
+        if let loaded = ProjectStore.load(from: url) {
             self.projects = loaded
         } else {
             self.projects = []
@@ -19,7 +33,22 @@ final class ProjectStore: ObservableObject {
         }
     }
 
+    // MARK: - PREVIEW (no disk)
+    static func preview(projects: [Project]) -> ProjectStore {
+        let store = ProjectStore(persistenceEnabled: false)
+        store.projects = projects
+        return store
+    }
+
+    // Private initializer for preview
+    private init(persistenceEnabled: Bool) {
+        self.persistenceEnabled = persistenceEnabled
+        self.fileURL = nil
+        self.projects = []
+    }
+
     func save() {
+        guard persistenceEnabled, let fileURL else { return }
         ProjectStore.save(projects, to: fileURL)
     }
 

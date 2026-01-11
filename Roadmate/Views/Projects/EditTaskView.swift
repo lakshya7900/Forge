@@ -1,3 +1,11 @@
+//
+//  EditTaskView.swift
+//  Roadmate
+//
+//  Created by Lakshya Agarwal on 1/9/26.
+//
+
+
 import SwiftUI
 
 struct EditTaskView: View {
@@ -6,17 +14,20 @@ struct EditTaskView: View {
     let members: [ProjectMember]
     let original: TaskItem
     let onSave: (TaskItem) -> Void
+    let onDelete: () -> Void
 
     @State private var title: String
     @State private var details: String
     @State private var status: TaskStatus
     @State private var owner: String
     @State private var difficulty: Double
+    @State private var showDeleteConfirm = false
 
-    init(task: TaskItem, members: [ProjectMember], onSave: @escaping (TaskItem) -> Void) {
+    init(task: TaskItem, members: [ProjectMember], onSave: @escaping (TaskItem) -> Void, onDelete: @escaping () -> Void) {
         self.original = task
         self.members = members
         self.onSave = onSave
+        self.onDelete = onDelete
 
         _title = State(initialValue: task.title)
         _details = State(initialValue: task.details)
@@ -56,6 +67,13 @@ struct EditTaskView: View {
             }
 
             HStack {
+                Button(role: .destructive) {
+                    showDeleteConfirm = true
+                } label: {
+                    Label("Delete Task", systemImage: "trash")
+                }
+                .buttonStyle(.bordered)
+                .tint(Color.red)
                 Spacer()
                 Button("Cancel") { dismiss() }
                 Button("Save") {
@@ -74,5 +92,19 @@ struct EditTaskView: View {
         }
         .padding(20)
         .frame(minWidth: 560, minHeight: 420)
+        .confirmationDialog(
+            "Delete this task?",
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Delete Task", role: .destructive) {
+                onDelete()
+                dismiss()
+            }
+
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This action cannot be undone.")
+        }
     }
 }

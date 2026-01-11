@@ -26,16 +26,7 @@ struct LoginView: View {
 
             VStack(spacing: 12) {
                 TextField("Username", text: $username)
-                    .textFieldStyle(.plain)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .glassEffect(.clear, in: .rect(cornerRadius: 12))
-
                 SecureField("Password", text: $password)
-                    .textFieldStyle(.plain)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .glassEffect(.clear, in: .rect(cornerRadius: 12))
             }
 
             if let errorMessage {
@@ -54,7 +45,6 @@ struct LoginView: View {
                         .padding(.vertical, 4)
                 }
             }
-            .buttonStyle(.glassProminent)
             .disabled(isLoading)
             .keyboardShortcut(.defaultAction)
             .buttonStyle(.borderedProminent)
@@ -64,7 +54,7 @@ struct LoginView: View {
             Button("Create account") {
                 showSignup = true
             }
-            .buttonStyle(.link)
+//            .buttonStyle(.link)
         }
         .padding(32)
         .frame(width: 360)

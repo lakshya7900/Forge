@@ -11,8 +11,7 @@ struct AddSkillView: View {
     @Environment(\.dismiss) private var dismiss
     let onAdd: (Skill) -> Void
 
-    @State private var kind: SkillKind = .language
-    @State private var name: String = ""
+    @State private var name : String = ""
     @State private var proficiency: Double = 5
 
     var body: some View {
@@ -22,16 +21,15 @@ struct AddSkillView: View {
                 .fontWeight(.semibold)
 
             Form {
-                Picker("Type", selection: $kind) {
-                    ForEach(SkillKind.allCases) { k in
-                        Text(k.rawValue.capitalized).tag(k)
-                    }
-                }
-
                 TextField("Name (e.g., Swift, React, Postgres)", text: $name)
 
                 VStack(alignment: .leading) {
-                    Text("Proficiency: \(Int(proficiency))/10")
+                    HStack {
+                        Text("Proficiency")
+                        Spacer()
+                        Text("\(Int(proficiency))/10")
+                            .foregroundStyle(.secondary)
+                    }
                     Slider(value: $proficiency, in: 1...10, step: 1)
                 }
             }
@@ -40,8 +38,10 @@ struct AddSkillView: View {
                 Spacer()
                 Button("Cancel") { dismiss() }
                 Button("Add") {
-                    let skill = Skill(kind: kind, name: name.trimmingCharacters(in: .whitespacesAndNewlines), proficiency: Int(proficiency))
-                    onAdd(skill)
+                    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !trimmed.isEmpty else { return }
+
+                    onAdd(Skill(name: trimmed, proficiency: Int(proficiency)))
                     dismiss()
                 }
                 .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

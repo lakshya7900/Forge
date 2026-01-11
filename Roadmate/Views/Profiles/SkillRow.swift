@@ -51,7 +51,7 @@ struct SkillRow: View {
 
 #Preview {
     SkillRow(
-        skill: Skill(kind: .language, name: "Swift", proficiency: 8),
+        skill: Skill(name: "Swift", proficiency: 8),
         onChange: { _ in },
         onDelete: { }
     )

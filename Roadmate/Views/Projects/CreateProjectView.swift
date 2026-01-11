@@ -1,3 +1,10 @@
+//
+//  CreateProjectView.swift
+//  Roadmate
+//
+//  Created by Lakshya Agarwal on 1/9/26.
+//
+
 import SwiftUI
 
 struct CreateProjectView: View {
@@ -27,14 +34,16 @@ struct CreateProjectView: View {
                 Button("Create") {
                     let owner = ProjectMember(
                         username: session.username ?? "me",
-                        role: .owner
+                        roleKey: ProjectRole.fullstack.rawValue
                     )
+
                     let project = Project(
                         name: name.trimmingCharacters(in: .whitespacesAndNewlines),
                         description: description,
                         members: [owner],
-                        tasks: []
-                    )
+                        tasks: [],
+                        ownerMemberId: owner.id,                    )
+
                     onCreate(project)
                     dismiss()
                 }
@@ -45,3 +54,8 @@ struct CreateProjectView: View {
         .padding(20)
     }
 }
+
+//#Preview {
+//    CreateProjectView(onCreate: { _ in })
+//        .environmentObject(SessionState())
+//}

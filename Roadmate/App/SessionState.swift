@@ -25,3 +25,11 @@ final class SessionState: ObservableObject {
         self.isAuthenticated = false
     }
 }
+
+extension SessionState {
+    static func preview(username: String = "preview-user") -> SessionState {
+        let s = SessionState()
+        s.login(username: username)
+        return s
+    }
+}

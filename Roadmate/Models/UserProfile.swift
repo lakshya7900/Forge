@@ -6,10 +6,41 @@
 //
 
 
+import SwiftUI
 import Foundation
 
 struct UserProfile: Codable, Equatable {
-    var displayName: String
-    var headline: String
-    var skills: [Skill]
+    var username: String
+    var name: String = ""
+    var headline: String = ""
+    var bio: String = ""
+    var skills: [Skill] = []
+    var education: [Education] = []
+}
+
+struct Skill: Codable, Identifiable, Equatable {
+    var id: UUID = UUID()
+    var name: String
+    var proficiency: Int  // 1...10
+}
+
+struct Education: Codable, Identifiable, Equatable {
+    var id: UUID = UUID()
+    var school: String
+    var degree: String
+    var years: String
+}
+
+extension UserProfile {
+    static func defaultProfile(for username: String) -> UserProfile {
+        // If your struct uses different field names, adjust here.
+        UserProfile(
+            username: username,
+            name: username,
+            headline: "",
+            bio: "",
+            skills: [],
+            education: []
+        )
+    }
 }
