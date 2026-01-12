@@ -28,7 +28,9 @@ struct Education: Codable, Identifiable, Equatable {
     var id: UUID = UUID()
     var school: String
     var degree: String
-    var years: String
+    var major: String
+    var startyear: Int
+    var endyear: Int
 }
 
 extension UserProfile {

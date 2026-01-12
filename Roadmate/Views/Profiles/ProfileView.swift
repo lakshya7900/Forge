@@ -15,6 +15,13 @@ struct ProfileView: View {
     @State private var showAddSkill = false
     @State private var editingSkill: Skill? = nil
     @State private var showManageSkills = false
+    
+    @State private var showAddEducation = false
+    @State private var educationEditMode = false
+    @State private var editingEducation: Education? = nil
+    
+    @State private var showEditProjects = false
+    @State private var showAllProjects = false
 
     // If you don’t have ProfileStore yet, replace these with @State placeholders.
     private var profile: UserProfile {
@@ -60,7 +67,7 @@ struct ProfileView: View {
                 profileStore.profile.skills.sort { $0.proficiency > $1.proficiency }
                 profileStore.save()
             }
-            .frame(minWidth: 520, minHeight: 300)
+            .frame(width: 600, height: 200)
         }
 
         .sheet(isPresented: $showManageSkills) {
@@ -69,7 +76,68 @@ struct ProfileView: View {
                 onSave: { profileStore.save() }
             )
         }
+        
+        .sheet(isPresented: $showAddEducation){
+            AddEducationView { newEdu in
+                let exists = profileStore.profile.education.contains {
+                    $0.school.lowercased() == newEdu.school.lowercased() &&
+                    $0.degree.lowercased() == newEdu.degree.lowercased() &&
+                    $0.major.lowercased() == newEdu.major.lowercased() &&
+                    $0.startyear == newEdu.startyear &&
+                    $0.endyear == newEdu.endyear
+                }
+                guard !exists else { return }
+                
+                profileStore.profile.education.append(newEdu)
+                
+                profileStore.profile.education.sort { a, b in
+                    if a.endyear != b.endyear { return a.endyear > b.endyear }
+                    return a.startyear > b.startyear
+                }
+                
+                profileStore.save()
+            }
+            .frame(width: 550, height: 260)
+        }
+        
+        .sheet(item: $editingEducation) { edu in
+            EditEducationView(
+                education: edu,
+                onSave: { updated in
+                    guard let idx = profileStore.profile.education.firstIndex(where: { $0.id == edu.id }) else { return }
 
+                    // preserve the same id
+                    profileStore.profile.education[idx] = Education(
+                        id: edu.id,
+                        school: updated.school,
+                        degree: updated.degree,
+                        major: updated.major,
+                        startyear: updated.startyear,
+                        endyear: updated.endyear
+                    )
+
+                    // optional: sort newest first
+                    profileStore.profile.education.sort { a, b in
+                        if a.endyear != b.endyear { return a.endyear > b.endyear }
+                        return a.startyear > b.startyear
+                    }
+
+                    profileStore.save()
+                },
+                onDelete: {
+                    profileStore.profile.education.removeAll { $0.id == edu.id }
+                    profileStore.save()
+                }
+            )
+            .frame(minWidth: 520, minHeight: 360)
+        }
+         
+        .sheet(isPresented: $showEditProjects) {
+            ManageProjectsView(projects: $projectStore.projects) {
+                projectStore.save()
+            }
+            .frame(minWidth: 520, minHeight: 520)
+        }
     }
 
     // MARK: - Hero
@@ -226,28 +294,54 @@ struct ProfileView: View {
     }
 
     private var educationCard: some View {
-        card(title: "Education", systemImage: "graduationcap.fill") {
+        card(
+            title: "Education",
+            systemImage: "graduationcap.fill",
+            onAdd: { showAddEducation = true },
+            onEdit: { educationEditMode = true },
+            editMode: $educationEditMode
+        ) {
             if profile.education.isEmpty {
                 emptyRow("No education added.")
             } else {
                 VStack(spacing: 10) {
                     ForEach(profile.education) { e in
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Text(e.school)
-                                    .font(.headline)
-                                Spacer()
-                                Text(e.years)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
+                        HStack(alignment: .center, spacing: 10) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                VStack(alignment: .leading, spacing: 5) {
+                                    HStack {
+                                        Text(e.school)
+                                            .font(.headline)
+                                        Spacer()
+                                        Text("\(String(e.startyear)) - \(String(e.endyear))")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
 
-                            Text(e.degree)
+                                    Text("\(e.degree) in \(e.major)")
+                                        .foregroundStyle(.secondary)
+                                        .font(.subheadline)
+                                }
+                            }
+                            .padding(12)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+                            
+                            if educationEditMode {
+                                Button {
+                                    editingEducation = e
+                                } label: {
+                                    Image(systemName: "pencil")
+                                        .font(.subheadline)
+                                }
+                                .buttonStyle(.borderless)
                                 .foregroundStyle(.secondary)
-                                .font(.subheadline)
+                                .padding(.top, 10)
+                                .help("Edit education")
+                                .transition(.opacity)
+                            }
                         }
-                        .padding(12)
-                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+                        .animation(.snappy, value: educationEditMode)
                     }
                 }
             }
@@ -255,53 +349,153 @@ struct ProfileView: View {
     }
 
     private var projectsCard: some View {
-        card(title: "Projects", systemImage: "folder.fill") {
+        card(
+            title: "Projects",
+            systemImage: "folder.fill",
+            onEdit: { showEditProjects = true }
+        ) {
             if projectStore.projects.isEmpty {
                 emptyRow("No projects yet.")
             } else {
-                VStack(spacing: 10) {
-                    ForEach(projectStore.projects.prefix(6)) { p in
-                        HStack(spacing: 10) {
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(.secondary.opacity(0.18))
-                                .frame(width: 34, height: 34)
-                                .overlay(
-                                    Image(systemName: "folder.fill")
-                                        .foregroundStyle(.secondary)
-                                )
+                let all = projectStore.projects
 
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(p.name)
-                                    .font(.headline)
-                                    .lineLimit(1)
+                // how many should be shown right now
+                let shownCount = min(all.count, showAllProjects ? all.count : projectsCollapsedCount)
+                let visible = Array(all.prefix(shownCount))
 
-                                Text("\(p.tasks.count) tasks • \(p.members.count) members")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                // desired height grows with content until max; after that we scroll
+                let desired = projectsNeededHeight(for: visible.count)
+                let clampedHeight = min(desired, projectsMaxHeight)
+                let shouldScroll = desired > projectsMaxHeight
+
+                VStack(alignment: .leading, spacing: 10) {
+
+                    // Stage logic:
+                    // - collapsed: not scrollable
+                    // - expanded: grows
+                    // - expanded + too many: scrolls
+                    Group {
+                        if shouldScroll {
+                            ScrollView {
+                                VStack(spacing: 10) {
+                                    ForEach(visible) { p in
+                                        projectRow(p)
+                                    }
+                                }
+                                .padding(.vertical, 2)
                             }
+                            .frame(height: clampedHeight)
+                        } else {
+                            VStack(spacing: 10) {
+                                ForEach(visible) { p in
+                                    projectRow(p)
+                                }
+                            }
+                            .frame(height: clampedHeight, alignment: .top)
+                        }
+                    }
+                    .animation(.snappy, value: showAllProjects)
 
-                            Spacer()
-
-                            if p.isPinned {
-                                Image(systemName: "pin.fill")
-                                    .foregroundStyle(.secondary)
+                    // Buttons
+                    if all.count > projectsCollapsedCount {
+                        HStack(alignment: .center) {
+                            if !showAllProjects {
+                                Button {
+                                    withAnimation(.snappy) {
+                                        // Expand
+                                        showAllProjects = true
+                                    }
+                                } label: {
+                                    Text("Show more")
+                                }
+                                .buttonStyle(.plain)
+                                .foregroundStyle(.secondary)
+                            } else {
+                                Button {
+                                    withAnimation(.snappy) {
+                                        // Collapse
+                                        showAllProjects = false
+                                    }
+                                } label: {
+                                    Text("Show less")
+                                }
+                                .buttonStyle(.plain)
+                                .foregroundStyle(.secondary)
                             }
                         }
-                        .padding(12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14)
-                                .fill(.regularMaterial)
-                        )
+                        .padding(.top, 2)
                     }
                 }
             }
         }
     }
 
+    
+    private func projectRow(_ p: Project) -> some View {
+        HStack(spacing: 10) {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.secondary.opacity(0.18))
+                .frame(width: 34, height: 34)
+                .overlay(
+                    Image(systemName: "folder.fill")
+                        .foregroundStyle(.secondary)
+                )
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(p.name)
+                    .font(.headline)
+                    .lineLimit(1)
+
+                Text("\(p.tasks.count) tasks • \(p.members.count) members")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            if p.isPinned {
+                Image(systemName: "pin.fill")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(.regularMaterial)
+        )
+    }
+    
+    private let projectRowHeight: CGFloat = 68     // approx row height (your tile + padding)
+    private let projectsCollapsedCount = 3
+    private let projectsExpandStep = 5             // "show more" reveals 5 more each click
+    private let projectsMaxHeight: CGFloat = 360   // max height before scrolling kicks in
+
+    private func projectsNeededHeight(for count: Int) -> CGFloat {
+        // count * rowHeight + spacing between rows
+        // spacing is 10 between rows (your VStack spacing)
+        let spacing: CGFloat = 10
+        let totalSpacing = max(0, CGFloat(count - 1)) * spacing
+        return CGFloat(count) * projectRowHeight + totalSpacing
+    }
+
+
+
     // MARK: - Card helper
 
-    private func card<Content: View>(title: String, systemImage: String, onAdd: (() -> Void)? = nil, onEdit: (() -> Void)? = nil, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+    private func card<Content: View>(
+        /// Basics
+        title: String,
+        systemImage: String,
+        /// Optionals
+        onAdd: (() -> Void)? = nil,
+        onEdit: (() -> Void)? = nil,
+        editMode: Binding<Bool>? = nil,
+        /// Main content
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        let isEditing = editMode?.wrappedValue ?? false
+        
+        return VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Label {
                     Text(title)
@@ -320,7 +514,16 @@ struct ProfileView: View {
                     .help("Add \(title)")
                 }
                 
-                if let onEdit {
+                if let editMode {
+                    Button(action: {
+                        editMode.wrappedValue.toggle()
+                    }, label: {
+                        Image(systemName: isEditing ? "checkmark.circle.fill" : "pencil")
+                            .foregroundStyle(isEditing ? .green : .secondary)
+                    })
+                    .buttonStyle(.plain)
+                    .help(isEditing ? "Done" : "Edit \(title)")
+                } else if let onEdit {
                     Button (action: onEdit) {
                         Image(systemName: "pencil")
                             .foregroundStyle(.secondary)
@@ -394,6 +597,41 @@ struct ProfileView: View {
             members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
             tasks: [TaskItem(title: "Demo", status: .done)],
             ownerMemberId: UUID()
+        ),
+        Project(
+            name: "Roadmate1",
+            description: "Local AI dev planner for teams.",
+            members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
+            tasks: [TaskItem(title: "Demo", status: .done)],
+            ownerMemberId: UUID()
+        ),
+        Project(
+            name: "Roadmate2",
+            description: "Local AI dev planner for teams.",
+            members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
+            tasks: [TaskItem(title: "Demo", status: .done)],
+            ownerMemberId: UUID()
+        ),
+        Project(
+            name: "Roadmate3",
+            description: "Local AI dev planner for teams.",
+            members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
+            tasks: [TaskItem(title: "Demo", status: .done)],
+            ownerMemberId: UUID()
+        ),
+        Project(
+            name: "Roadmate4",
+            description: "Local AI dev planner for teams.",
+            members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
+            tasks: [TaskItem(title: "Demo", status: .done)],
+            ownerMemberId: UUID()
+        ),
+        Project(
+            name: "Roadmate5",
+            description: "Local AI dev planner for teams.",
+            members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
+            tasks: [TaskItem(title: "Demo", status: .done)],
+            ownerMemberId: UUID()
         )
     ])
 
@@ -411,7 +649,7 @@ struct ProfileView: View {
                 Skill(name: "PostgreSQL", proficiency: 1),
             ],
             education: [
-                Education(school: "Virginia Tech", degree: "B.S. Computer Science", years: "2024–2028")
+                Education(school: "Virginia Tech", degree: "Bachelor's", major: "Computer Science", startyear: 2024, endyear: 2028)
             ]
         )
     )

@@ -27,10 +27,10 @@ struct AddSkillView: View {
                     HStack {
                         Text("Proficiency")
                         Spacer()
+                        Slider(value: $proficiency, in: 1...10, step: 1)
                         Text("\(Int(proficiency))/10")
                             .foregroundStyle(.secondary)
                     }
-                    Slider(value: $proficiency, in: 1...10, step: 1)
                 }
             }
 
@@ -54,5 +54,6 @@ struct AddSkillView: View {
 
 #Preview {
     AddSkillView { _ in }
+        .frame(width: 600, height: 200)
 }
 

@@ -44,6 +44,7 @@ struct ManageSkillsView: View {
                                 .padding(5)
                         }
                         .clipShape(Circle())
+                        .tint(.red)
                     }
                     .contentShape(Rectangle())
                     .onTapGesture { editing = s }
@@ -73,7 +74,7 @@ struct ManageSkillsView: View {
                 }
             )
         }
-        .frame(minWidth: 520, minHeight: 420)
+        .frame(minWidth: 600, minHeight: 200)
     }
     
     private func remove(_ id: UUID) {

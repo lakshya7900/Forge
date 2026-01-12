@@ -36,14 +36,14 @@ struct EditSkillView: View {
             Form {
                 TextField("Skill", text: $name)
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading) {
                     HStack {
                         Text("Proficiency")
                         Spacer()
+                        Slider(value: $proficiency, in: 1...10, step: 1)
                         Text("\(Int(proficiency))/10")
                             .foregroundStyle(.secondary)
                     }
-                    Slider(value: $proficiency, in: 1...10, step: 1)
                 }
             }
 
@@ -54,6 +54,7 @@ struct EditSkillView: View {
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }
+                .tint(Color(.systemRed))
 
                 Spacer()
 
@@ -82,5 +83,5 @@ struct EditSkillView: View {
         onSave: { _ in },
         onDelete: {}
     )
-    .frame(width: 520, height: 320)
+    .frame(width: 600, height: 200)
 }

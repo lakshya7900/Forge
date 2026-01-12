@@ -142,7 +142,7 @@ struct RootView: View {
     let projectStore = ProjectStore.preview(projects: [demoProject1, demoProject2])
 
     let demoSkill = Skill(name: "Swift", proficiency: 8)
-    let demoEducation = Education(school: "Virginia Tech", degree: "Computer Science", years: "2024-2028")
+    let demoEducation = Education(school: "Virginia Tech", degree: "Bachelor's", major: "Computer Science", startyear: 2024, endyear: 2028)
     let profileStore = ProfileStore.preview(profile: UserProfile(
         username: "user1234",
         name: "Preview User",
