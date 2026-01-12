@@ -22,6 +22,8 @@ struct ProfileView: View {
     
     @State private var showEditProjects = false
     @State private var showAllProjects = false
+    
+    @State private var showEditProfile = false
 
     // If you don’t have ProfileStore yet, replace these with @State placeholders.
     private var profile: UserProfile {
@@ -138,6 +140,17 @@ struct ProfileView: View {
             }
             .frame(minWidth: 520, minHeight: 520)
         }
+        
+        .sheet(isPresented: $showEditProfile) {
+            EditProfileView(
+                user: profileStore.profile,
+                onSave: { updated in
+                    profileStore.profile = updated
+                    profileStore.save()
+                }
+            )
+            .frame(minWidth: 600, minHeight: 250)
+        }
     }
 
     // MARK: - Hero
@@ -171,9 +184,7 @@ struct ProfileView: View {
 
                     // Quick action(s)
                     Menu {
-                        Button("Edit Profile") {
-                            // hook later
-                        }
+                        Button("Edit Profile") { showEditProfile = true }
                         Divider()
                         Button("Logout", role: .destructive) {
                             session.logout()
@@ -561,10 +572,10 @@ struct ProfileView: View {
     
     private func proficiencyTint(_ p: Int) -> Color {
         switch p {
-        case 1...3: return .blue
-        case 4...6: return .orange
+        case 1...3: return .red
+        case 4...6: return .blue
         case 7...8: return .green
-        default: return .purple
+        default: return .yellow
         }
     }
     

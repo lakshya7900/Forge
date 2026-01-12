@@ -157,5 +157,5 @@ struct RootView: View {
         .environmentObject(appState)
         .environmentObject(projectStore)
         .environmentObject(profileStore)
-        .frame(width: 600, height: 340)
+        .frame(width: 900, height: 500)
 }
