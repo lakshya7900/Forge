@@ -11,9 +11,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BF3098002F10678A0093A6D9 /* Roadmate */ = {
+		BF3098002F10678A0093A6D9 /* Frontend */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Roadmate;
+			path = Frontend;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		BF3097F52F10678A0093A6D9 = {
 			isa = PBXGroup;
 			children = (
-				BF3098002F10678A0093A6D9 /* Roadmate */,
+				BF3098002F10678A0093A6D9 /* Frontend */,
 				BF3097FF2F10678A0093A6D9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +61,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BF3098002F10678A0093A6D9 /* Roadmate */,
+				BF3098002F10678A0093A6D9 /* Frontend */,
 			);
 			name = Roadmate;
 			packageProductDependencies = (

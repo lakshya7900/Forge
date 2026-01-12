@@ -14,8 +14,10 @@ enum AuthError: Error {
 final class AuthService {
     /// Fake login — always succeeds after delay
     func login(username: String, password: String) async throws {
-        try await Task.sleep(nanoseconds: 700_000_000)
+//        try await Task.sleep(nanoseconds: 700_000_000)
 
+        throw AuthError.invalidCredentials
+        
         guard !username.isEmpty, !password.isEmpty else {
             throw AuthError.invalidCredentials
         }
