@@ -21,6 +21,7 @@ final class SessionState: ObservableObject {
     }
 
     func logout() {
+        KeychainService.deleteToken()
         self.username = nil
         self.isAuthenticated = false
     }

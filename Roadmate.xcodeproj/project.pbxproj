@@ -32,6 +32,7 @@
 		BF3097F52F10678A0093A6D9 = {
 			isa = PBXGroup;
 			children = (
+				BF736B2F2F15A3C600A45399 /* Backend */,
 				BF3098002F10678A0093A6D9 /* Frontend */,
 				BF3097FF2F10678A0093A6D9 /* Products */,
 			);
@@ -43,6 +44,13 @@
 				BF3097FE2F10678A0093A6D9 /* Roadmate.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BF736B2F2F15A3C600A45399 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Backend;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +264,7 @@
 				DEVELOPMENT_TEAM = D5ZHG97BYR;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -288,6 +297,7 @@
 				DEVELOPMENT_TEAM = D5ZHG97BYR;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;

@@ -182,17 +182,17 @@ struct SignupView: View {
 
             Spacer()
 
-            if step == .profile {
-                Button("Skip") {
-                    Task { await createAccountThenSaveProfileAndLogin(skipProfile: true) }
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(.secondary)
-                .disabled(isLoading)
-            }
+//            if step == .profile {
+//                Button("Skip") {
+//                    Task { await createAccountThenSaveProfileAndLogin(skipProfile: true) }
+//                }
+//                .buttonStyle(.plain)
+//                .foregroundStyle(.secondary)
+//                .disabled(isLoading)
+//            }
 
             Button {
-                primaryAction()
+                Task { await primaryAction() }
             } label: {
                 HStack(spacing: 10) {
                     if isLoading {
@@ -219,21 +219,29 @@ struct SignupView: View {
 
     // MARK: - Actions
 
-    private func primaryAction() {
+    private func primaryAction() async {
         message = nil
 
         switch step {
         case .account:
-            guard validateAccount() else { return }
+            guard await validateAccount() else { return }
             step = .profile
 
         case .profile:
-            Task { await createAccountThenSaveProfileAndLogin(skipProfile: false) }
+            await createAccountThenSaveProfileAndLogin(skipProfile: false)
         }
     }
 
-    private func validateAccount() -> Bool {
+    private func validateAccount() async -> Bool {
+        isLoading = true
+        defer { isLoading = false }
         let u = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if u.count < 3 {
+            message = "Username must be at least 3 characters."
+            shakeTrigger += 1
+            return false
+        }
 
         if u.isEmpty || password.isEmpty || confirmPassword.isEmpty {
             message = "Please fill in username, password, and confirm password."
@@ -252,7 +260,21 @@ struct SignupView: View {
             shakeTrigger += 1
             return false
         }
-
+        
+        do {
+            let availableUsername = try await auth.validateUsername(u)
+            if !availableUsername {
+                message = "That username is already taken."
+                shakeTrigger += 1
+                return false
+            }
+        } catch {
+            // Surface a generic error if username validation fails
+            message = "Couldn't validate username. Please try again."
+            shakeTrigger += 1
+            return false
+        }
+        
         return true
     }
 
