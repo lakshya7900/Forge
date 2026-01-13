@@ -6,20 +6,92 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BF2128392F15F3A800265C39 /* launch.json in Resources */ = {isa = PBXBuildFile; fileRef = BF2127BE2F15F3A800265C39 /* launch.json */; };
+		BF21283A2F15F3A800265C39 /* init.sql in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C02F15F3A800265C39 /* init.sql */; };
+		BF21283B2F15F3A800265C39 /* jwt.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C22F15F3A800265C39 /* jwt.go */; };
+		BF21283C2F15F3A800265C39 /* middleware.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C32F15F3A800265C39 /* middleware.go */; };
+		BF21283D2F15F3A800265C39 /* password.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C42F15F3A800265C39 /* password.go */; };
+		BF21283E2F15F3A800265C39 /* config.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C62F15F3A800265C39 /* config.go */; };
+		BF21283F2F15F3A800265C39 /* db.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C82F15F3A800265C39 /* db.go */; };
+		BF2128402F15F3A800265C39 /* migrate.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127C92F15F3A800265C39 /* migrate.go */; };
+		BF2128412F15F3A800265C39 /* auth.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127CB2F15F3A800265C39 /* auth.go */; };
+		BF2128422F15F3A800265C39 /* me.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127CC2F15F3A800265C39 /* me.go */; };
+		BF2128432F15F3A800265C39 /* util.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127CD2F15F3A800265C39 /* util.go */; };
+		BF2128442F15F3A800265C39 /* __debug_bin2688398383 in Resources */ = {isa = PBXBuildFile; fileRef = BF2127D02F15F3A800265C39 /* __debug_bin2688398383 */; };
+		BF2128452F15F3A800265C39 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = BF2127D12F15F3A800265C39 /* .env */; };
+		BF2128462F15F3A800265C39 /* go.mod in Resources */ = {isa = PBXBuildFile; fileRef = BF2127D22F15F3A800265C39 /* go.mod */; };
+		BF2128472F15F3A800265C39 /* go.sum in Resources */ = {isa = PBXBuildFile; fileRef = BF2127D32F15F3A800265C39 /* go.sum */; };
+		BF2128482F15F3A800265C39 /* main.go in Resources */ = {isa = PBXBuildFile; fileRef = BF2127D42F15F3A800265C39 /* main.go */; };
+		BF21284B2F15F3A800265C39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF21280E2F15F3A800265C39 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		BF3097FE2F10678A0093A6D9 /* Roadmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roadmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF2127BE2F15F3A800265C39 /* launch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = launch.json; sourceTree = "<group>"; };
+		BF2127C02F15F3A800265C39 /* init.sql */ = {isa = PBXFileReference; lastKnownFileType = text; path = init.sql; sourceTree = "<group>"; };
+		BF2127C22F15F3A800265C39 /* jwt.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = jwt.go; sourceTree = "<group>"; };
+		BF2127C32F15F3A800265C39 /* middleware.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = middleware.go; sourceTree = "<group>"; };
+		BF2127C42F15F3A800265C39 /* password.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = password.go; sourceTree = "<group>"; };
+		BF2127C62F15F3A800265C39 /* config.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = config.go; sourceTree = "<group>"; };
+		BF2127C82F15F3A800265C39 /* db.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = db.go; sourceTree = "<group>"; };
+		BF2127C92F15F3A800265C39 /* migrate.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = migrate.go; sourceTree = "<group>"; };
+		BF2127CB2F15F3A800265C39 /* auth.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = auth.go; sourceTree = "<group>"; };
+		BF2127CC2F15F3A800265C39 /* me.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = me.go; sourceTree = "<group>"; };
+		BF2127CD2F15F3A800265C39 /* util.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = util.go; sourceTree = "<group>"; };
+		BF2127D02F15F3A800265C39 /* __debug_bin2688398383 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = __debug_bin2688398383; sourceTree = "<group>"; };
+		BF2127D12F15F3A800265C39 /* .env */ = {isa = PBXFileReference; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
+		BF2127D22F15F3A800265C39 /* go.mod */ = {isa = PBXFileReference; lastKnownFileType = text; path = go.mod; sourceTree = "<group>"; };
+		BF2127D32F15F3A800265C39 /* go.sum */ = {isa = PBXFileReference; lastKnownFileType = text; path = go.sum; sourceTree = "<group>"; };
+		BF2127D42F15F3A800265C39 /* main.go */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.go; sourceTree = "<group>"; };
+		BF2127D72F15F3A800265C39 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		BF2127D82F15F3A800265C39 /* RoadmateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadmateApp.swift; sourceTree = "<group>"; };
+		BF2127D92F15F3A800265C39 /* SessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionState.swift; sourceTree = "<group>"; };
+		BF2127DB2F15F3A800265C39 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		BF2127DC2F15F3A800265C39 /* ProjectMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectMember.swift; sourceTree = "<group>"; };
+		BF2127DD2F15F3A800265C39 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		BF2127DE2F15F3A800265C39 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		BF2127E12F15F3A800265C39 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		BF2127E22F15F3A800265C39 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		BF2127E32F15F3A800265C39 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		BF2127E42F15F3A800265C39 /* ProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStore.swift; sourceTree = "<group>"; };
+		BF2127E52F15F3A800265C39 /* ProjectStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStore.swift; sourceTree = "<group>"; };
+		BF2127E82F15F3A800265C39 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		BF2127E92F15F3A800265C39 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		BF2127EB2F15F3A800265C39 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		BF2127EC2F15F3A800265C39 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
+		BF2127EE2F15F3A800265C39 /* AddEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEducationView.swift; sourceTree = "<group>"; };
+		BF2127EF2F15F3A800265C39 /* AddSkillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSkillView.swift; sourceTree = "<group>"; };
+		BF2127F02F15F3A800265C39 /* EditEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEducationView.swift; sourceTree = "<group>"; };
+		BF2127F12F15F3A800265C39 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		BF2127F22F15F3A800265C39 /* EditSkillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSkillView.swift; sourceTree = "<group>"; };
+		BF2127F32F15F3A800265C39 /* ManageProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageProjectsView.swift; sourceTree = "<group>"; };
+		BF2127F42F15F3A800265C39 /* ManageSkillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSkillView.swift; sourceTree = "<group>"; };
+		BF2127F52F15F3A800265C39 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		BF2127F62F15F3A800265C39 /* SkillRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillRow.swift; sourceTree = "<group>"; };
+		BF2127F82F15F3A800265C39 /* AddMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberView.swift; sourceTree = "<group>"; };
+		BF2127F92F15F3A800265C39 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		BF2127FA2F15F3A800265C39 /* AllProjectsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProjectsGridView.swift; sourceTree = "<group>"; };
+		BF2127FB2F15F3A800265C39 /* CreateProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProjectView.swift; sourceTree = "<group>"; };
+		BF2127FC2F15F3A800265C39 /* EditProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProjectView.swift; sourceTree = "<group>"; };
+		BF2127FD2F15F3A800265C39 /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
+		BF2127FE2F15F3A800265C39 /* MemberRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberRow.swift; sourceTree = "<group>"; };
+		BF2127FF2F15F3A800265C39 /* ProjectBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBoardView.swift; sourceTree = "<group>"; };
+		BF2128002F15F3A800265C39 /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
+		BF2128012F15F3A800265C39 /* ProjectMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectMembersView.swift; sourceTree = "<group>"; };
+		BF2128022F15F3A800265C39 /* ProjectOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOverviewView.swift; sourceTree = "<group>"; };
+		BF2128032F15F3A800265C39 /* ProjectsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsListView.swift; sourceTree = "<group>"; };
+		BF2128042F15F3A800265C39 /* ProjectTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTile.swift; sourceTree = "<group>"; };
+		BF2128052F15F3A800265C39 /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
+		BF2128072F15F3A800265C39 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		BF2128092F15F3A800265C39 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		BF21280B2F15F3A800265C39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BF21280C2F15F3A800265C39 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
+		BF21280E2F15F3A800265C39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BF736B562F15F32700A45399 /* Roadmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Roadmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		BF3098002F10678A0093A6D9 /* Frontend */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Frontend;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
-		BF3097FB2F10678A0093A6D9 /* Frameworks */ = {
+		BF736B532F15F32700A45399 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,11 +101,245 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF2127BF2F15F3A800265C39 /* .vscode */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127BE2F15F3A800265C39 /* launch.json */,
+			);
+			path = .vscode;
+			sourceTree = "<group>";
+		};
+		BF2127C12F15F3A800265C39 /* db */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127C02F15F3A800265C39 /* init.sql */,
+			);
+			path = db;
+			sourceTree = "<group>";
+		};
+		BF2127C52F15F3A800265C39 /* auth */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127C22F15F3A800265C39 /* jwt.go */,
+				BF2127C32F15F3A800265C39 /* middleware.go */,
+				BF2127C42F15F3A800265C39 /* password.go */,
+			);
+			path = auth;
+			sourceTree = "<group>";
+		};
+		BF2127C72F15F3A800265C39 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127C62F15F3A800265C39 /* config.go */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		BF2127CA2F15F3A800265C39 /* db */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127C82F15F3A800265C39 /* db.go */,
+				BF2127C92F15F3A800265C39 /* migrate.go */,
+			);
+			path = db;
+			sourceTree = "<group>";
+		};
+		BF2127CE2F15F3A800265C39 /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127CB2F15F3A800265C39 /* auth.go */,
+				BF2127CC2F15F3A800265C39 /* me.go */,
+				BF2127CD2F15F3A800265C39 /* util.go */,
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		BF2127CF2F15F3A800265C39 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127C52F15F3A800265C39 /* auth */,
+				BF2127C72F15F3A800265C39 /* config */,
+				BF2127CA2F15F3A800265C39 /* db */,
+				BF2127CE2F15F3A800265C39 /* handlers */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		BF2127D52F15F3A800265C39 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127BF2F15F3A800265C39 /* .vscode */,
+				BF2127C12F15F3A800265C39 /* db */,
+				BF2127CF2F15F3A800265C39 /* internal */,
+				BF2127D02F15F3A800265C39 /* __debug_bin2688398383 */,
+				BF2127D12F15F3A800265C39 /* .env */,
+				BF2127D22F15F3A800265C39 /* go.mod */,
+				BF2127D32F15F3A800265C39 /* go.sum */,
+				BF2127D42F15F3A800265C39 /* main.go */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		BF2127D62F15F3A800265C39 /* AI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		BF2127DA2F15F3A800265C39 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127D72F15F3A800265C39 /* AppState.swift */,
+				BF2127D82F15F3A800265C39 /* RoadmateApp.swift */,
+				BF2127D92F15F3A800265C39 /* SessionState.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		BF2127DF2F15F3A800265C39 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127DB2F15F3A800265C39 /* Project.swift */,
+				BF2127DC2F15F3A800265C39 /* ProjectMember.swift */,
+				BF2127DD2F15F3A800265C39 /* TaskItem.swift */,
+				BF2127DE2F15F3A800265C39 /* UserProfile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BF2127E02F15F3A800265C39 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		BF2127E62F15F3A800265C39 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127E12F15F3A800265C39 /* AuthService.swift */,
+				BF2127E22F15F3A800265C39 /* KeychainService.swift */,
+				BF2127E32F15F3A800265C39 /* ProfileService.swift */,
+				BF2127E42F15F3A800265C39 /* ProfileStore.swift */,
+				BF2127E52F15F3A800265C39 /* ProjectStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		BF2127E72F15F3A800265C39 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		BF2127EA2F15F3A800265C39 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127E82F15F3A800265C39 /* LoginView.swift */,
+				BF2127E92F15F3A800265C39 /* SignupView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		BF2127ED2F15F3A800265C39 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127EB2F15F3A800265C39 /* EmptyStateView.swift */,
+				BF2127EC2F15F3A800265C39 /* FlowLayout.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		BF2127F72F15F3A800265C39 /* Profiles */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127EE2F15F3A800265C39 /* AddEducationView.swift */,
+				BF2127EF2F15F3A800265C39 /* AddSkillView.swift */,
+				BF2127F02F15F3A800265C39 /* EditEducationView.swift */,
+				BF2127F12F15F3A800265C39 /* EditProfileView.swift */,
+				BF2127F22F15F3A800265C39 /* EditSkillView.swift */,
+				BF2127F32F15F3A800265C39 /* ManageProjectsView.swift */,
+				BF2127F42F15F3A800265C39 /* ManageSkillView.swift */,
+				BF2127F52F15F3A800265C39 /* ProfileView.swift */,
+				BF2127F62F15F3A800265C39 /* SkillRow.swift */,
+			);
+			path = Profiles;
+			sourceTree = "<group>";
+		};
+		BF2128062F15F3A800265C39 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127F82F15F3A800265C39 /* AddMemberView.swift */,
+				BF2127F92F15F3A800265C39 /* AddTaskView.swift */,
+				BF2127FA2F15F3A800265C39 /* AllProjectsGridView.swift */,
+				BF2127FB2F15F3A800265C39 /* CreateProjectView.swift */,
+				BF2127FC2F15F3A800265C39 /* EditProjectView.swift */,
+				BF2127FD2F15F3A800265C39 /* EditTaskView.swift */,
+				BF2127FE2F15F3A800265C39 /* MemberRow.swift */,
+				BF2127FF2F15F3A800265C39 /* ProjectBoardView.swift */,
+				BF2128002F15F3A800265C39 /* ProjectDetailView.swift */,
+				BF2128012F15F3A800265C39 /* ProjectMembersView.swift */,
+				BF2128022F15F3A800265C39 /* ProjectOverviewView.swift */,
+				BF2128032F15F3A800265C39 /* ProjectsListView.swift */,
+				BF2128042F15F3A800265C39 /* ProjectTile.swift */,
+				BF2128052F15F3A800265C39 /* TaskCardView.swift */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		BF2128082F15F3A800265C39 /* Sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				BF2128072F15F3A800265C39 /* SidebarView.swift */,
+			);
+			path = Sidebar;
+			sourceTree = "<group>";
+		};
+		BF21280A2F15F3A800265C39 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127EA2F15F3A800265C39 /* Auth */,
+				BF2127ED2F15F3A800265C39 /* Components */,
+				BF2127F72F15F3A800265C39 /* Profiles */,
+				BF2128062F15F3A800265C39 /* Projects */,
+				BF2128082F15F3A800265C39 /* Sidebar */,
+				BF2128092F15F3A800265C39 /* RootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BF21280D2F15F3A800265C39 /* Frontend */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127D62F15F3A800265C39 /* AI */,
+				BF2127DA2F15F3A800265C39 /* App */,
+				BF2127DF2F15F3A800265C39 /* Models */,
+				BF2127E02F15F3A800265C39 /* Resources */,
+				BF2127E62F15F3A800265C39 /* Services */,
+				BF2127E72F15F3A800265C39 /* Utilities */,
+				BF21280A2F15F3A800265C39 /* Views */,
+				BF21280B2F15F3A800265C39 /* Assets.xcassets */,
+				BF21280C2F15F3A800265C39 /* Development.xcconfig */,
+			);
+			path = Frontend;
+			sourceTree = "<group>";
+		};
+		BF21280F2F15F3A800265C39 /* Roadmate */ = {
+			isa = PBXGroup;
+			children = (
+				BF2127D52F15F3A800265C39 /* Backend */,
+				BF21280D2F15F3A800265C39 /* Frontend */,
+				BF21280E2F15F3A800265C39 /* Assets.xcassets */,
+			);
+			path = Roadmate;
+			sourceTree = "<group>";
+		};
 		BF3097F52F10678A0093A6D9 = {
 			isa = PBXGroup;
 			children = (
-				BF736B2F2F15A3C600A45399 /* Backend */,
-				BF3098002F10678A0093A6D9 /* Frontend */,
+				BF21280F2F15F3A800265C39 /* Roadmate */,
 				BF3097FF2F10678A0093A6D9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,41 +347,31 @@
 		BF3097FF2F10678A0093A6D9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BF3097FE2F10678A0093A6D9 /* Roadmate.app */,
+				BF736B562F15F32700A45399 /* Roadmate.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		BF736B2F2F15A3C600A45399 /* Backend */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Backend;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF3097FD2F10678A0093A6D9 /* Roadmate */ = {
+		BF736B552F15F32700A45399 /* Roadmate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BF3098092F10678B0093A6D9 /* Build configuration list for PBXNativeTarget "Roadmate" */;
+			buildConfigurationList = BF736B5E2F15F32800A45399 /* Build configuration list for PBXNativeTarget "Roadmate" */;
 			buildPhases = (
-				BF3097FA2F10678A0093A6D9 /* Sources */,
-				BF3097FB2F10678A0093A6D9 /* Frameworks */,
-				BF3097FC2F10678A0093A6D9 /* Resources */,
+				BF736B522F15F32700A45399 /* Sources */,
+				BF736B532F15F32700A45399 /* Frameworks */,
+				BF736B542F15F32700A45399 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				BF3098002F10678A0093A6D9 /* Frontend */,
-			);
 			name = Roadmate;
 			packageProductDependencies = (
 			);
 			productName = Roadmate;
-			productReference = BF3097FE2F10678A0093A6D9 /* Roadmate.app */;
+			productReference = BF736B562F15F32700A45399 /* Roadmate.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -88,7 +384,7 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
-					BF3097FD2F10678A0093A6D9 = {
+					BF736B552F15F32700A45399 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -107,23 +403,40 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BF3097FD2F10678A0093A6D9 /* Roadmate */,
+				BF736B552F15F32700A45399 /* Roadmate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BF3097FC2F10678A0093A6D9 /* Resources */ = {
+		BF736B542F15F32700A45399 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF2128392F15F3A800265C39 /* launch.json in Resources */,
+				BF21283A2F15F3A800265C39 /* init.sql in Resources */,
+				BF21283B2F15F3A800265C39 /* jwt.go in Resources */,
+				BF21283C2F15F3A800265C39 /* middleware.go in Resources */,
+				BF21283D2F15F3A800265C39 /* password.go in Resources */,
+				BF21283E2F15F3A800265C39 /* config.go in Resources */,
+				BF21283F2F15F3A800265C39 /* db.go in Resources */,
+				BF2128402F15F3A800265C39 /* migrate.go in Resources */,
+				BF2128412F15F3A800265C39 /* auth.go in Resources */,
+				BF2128422F15F3A800265C39 /* me.go in Resources */,
+				BF2128432F15F3A800265C39 /* util.go in Resources */,
+				BF2128442F15F3A800265C39 /* __debug_bin2688398383 in Resources */,
+				BF2128452F15F3A800265C39 /* .env in Resources */,
+				BF2128462F15F3A800265C39 /* go.mod in Resources */,
+				BF2128472F15F3A800265C39 /* go.sum in Resources */,
+				BF2128482F15F3A800265C39 /* main.go in Resources */,
+				BF21284B2F15F3A800265C39 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BF3097FA2F10678A0093A6D9 /* Sources */ = {
+		BF736B522F15F32700A45399 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,7 +566,7 @@
 			};
 			name = Release;
 		};
-		BF30980A2F10678B0093A6D9 /* Debug */ = {
+		BF736B5F2F15F32800A45399 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -264,7 +577,6 @@
 				DEVELOPMENT_TEAM = D5ZHG97BYR;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -286,7 +598,7 @@
 			};
 			name = Debug;
 		};
-		BF30980B2F10678B0093A6D9 /* Release */ = {
+		BF736B602F15F32800A45399 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -297,7 +609,6 @@
 				DEVELOPMENT_TEAM = D5ZHG97BYR;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -331,11 +642,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BF3098092F10678B0093A6D9 /* Build configuration list for PBXNativeTarget "Roadmate" */ = {
+		BF736B5E2F15F32800A45399 /* Build configuration list for PBXNativeTarget "Roadmate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BF30980A2F10678B0093A6D9 /* Debug */,
-				BF30980B2F10678B0093A6D9 /* Release */,
+				BF736B5F2F15F32800A45399 /* Debug */,
+				BF736B602F15F32800A45399 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
