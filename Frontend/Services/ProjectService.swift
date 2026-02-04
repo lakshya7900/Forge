@@ -13,6 +13,7 @@ struct ProjectResponse: Decodable {
     let description: String
     let owner_id: String
     let members: [ProjectMember]
+    let tasks: [TaskDTO]
 }
 
 struct CreateProjectRequest: Encodable {
@@ -63,7 +64,7 @@ final class ProjectService {
                 name: dto.name,
                 description: dto.description,
                 members: dto.members,
-                tasks: [],
+                tasks: dto.tasks.map{ TaskItem(from: $0) },
                 ownerMemberId: ownerID
             )
         }

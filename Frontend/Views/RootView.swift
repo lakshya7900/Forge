@@ -88,7 +88,6 @@ struct RootView: View {
     }
     
     private func getProjects() async {
-        print("Loading projects")
         guard let token = KeychainService.loadToken() else {
             print("Token error")
             return

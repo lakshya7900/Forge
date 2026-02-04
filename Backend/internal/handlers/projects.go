@@ -23,6 +23,7 @@ type Project struct {
     Description string 		`json:"description"`
 	OwnerId string 			`json:"owner_id"`
 	Members []Member 		`json:"members"`
+	Tasks []Task 			`json:"tasks"`
 }
 
 type EditProjectDetail struct {
@@ -144,6 +145,91 @@ func (h *Handler) GetProjects(c *gin.Context) {
 	// Attach members to each project
 	for i := range projects {
 		projects[i].Members = memberMap[projects[i].ID]
+	}
+
+	// 3) Fetch all tasks for those project IDs
+	taskRows, err := h.DB.Query(ctx, `
+		select
+			t.project_id::text,
+			t.id::text,
+			t.title,
+			coalesce(t.details, ''),
+			t.status,
+			coalesce(t.assignee_id::text, ''),
+			coalesce(u.username, ''),
+			t.difficulty,
+			t.sort_index,
+			t.created_at
+		from tasks t
+		left join users u on u.id = t.assignee_id
+		where t.project_id::text = any($1)
+		order by
+			t.project_id::text asc,
+			case t.status
+				when 'backlog' then 1
+				when 'inProgress' then 2
+				when 'blocked' then 3
+				when 'done' then 4
+				else 9
+			end,
+			t.sort_index asc,
+			t.created_at asc
+	`, projectIDs)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	defer taskRows.Close()
+
+	// projectID -> []Task
+	taskMap := make(map[string][]Task, len(projectIDs))
+
+	for taskRows.Next() {
+		var pid string
+		var t Task
+		var assigneeID string
+		var assigneeUsername string
+		var createdAt time.Time
+
+		if err := taskRows.Scan(
+			&pid,
+			&t.ID,
+			&t.Title,
+			&t.Details,
+			&t.Status,
+			&assigneeID,
+			&assigneeUsername,
+			&t.Difficulty,
+			&t.SortIndex,
+			&createdAt,
+		); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+			return
+		}
+
+		t.ProjectID = pid
+		if assigneeID != "" {
+			t.AssigneeID = &assigneeID
+		}
+		if assigneeUsername != "" {
+			t.AssigneeUsername = &assigneeUsername
+		}
+		t.CreatedAt = createdAt.UTC().Format(time.RFC3339)
+
+		taskMap[pid] = append(taskMap[pid], t)
+	}
+
+	if err := taskRows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	// Attach tasks to each project
+	for i := range projects {
+		projects[i].Tasks = taskMap[projects[i].ID]
+		if projects[i].Tasks == nil {
+			projects[i].Tasks = []Task{}
+		}
 	}
 
 	if err := tx.Commit(ctx); err != nil {

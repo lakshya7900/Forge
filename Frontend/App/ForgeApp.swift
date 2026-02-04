@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct RoadmateApp: App {
+struct ForgeApp: App {
     @State private var session = SessionState()
     @State private var appState = AppState()
 
@@ -16,10 +16,6 @@ struct RoadmateApp: App {
         WindowGroup {
             Group {
                 if session.isAuthenticated, let username = session.username {
-//                    RootView()
-//                        .environmentObject(ProfileStore(username: username))
-//                        .environmentObject(ProjectStore(username: username))
-//                        .environmentObject(appState)
                     AuthenticatedRootView(username: username)
                 } else {
                     LoginView()

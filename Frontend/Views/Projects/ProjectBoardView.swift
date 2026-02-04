@@ -43,6 +43,7 @@ struct ProjectBoardView: View {
             EditTaskView(
                 task: task,
                 members: project.members,
+                projectID: project.id,
                 onSave: { updated in
                     applyTaskUpdate(updated)
                 },
