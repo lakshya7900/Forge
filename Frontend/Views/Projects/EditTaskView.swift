@@ -14,6 +14,7 @@ struct EditTaskView: View {
     let members: [ProjectMember]
     let task: TaskItem
     let projectID: UUID
+    let allTasks: [TaskItem]
     let onSave: (TaskItem) -> Void
     let onDelete: () -> Void
     
@@ -31,10 +32,11 @@ struct EditTaskView: View {
     @State private var isLoading = false
     @State private var shakeTrigger: Int = 0
 
-    init(task: TaskItem, members: [ProjectMember], projectID: UUID, onSave: @escaping (TaskItem) -> Void, onDelete: @escaping () -> Void) {
+    init(task: TaskItem, members: [ProjectMember], projectID: UUID, allTasks: [TaskItem], onSave: @escaping (TaskItem) -> Void, onDelete: @escaping () -> Void) {
         self.task = task
         self.members = members
         self.projectID = projectID
+        self.allTasks = allTasks
         self.onSave = onSave
         self.onDelete = onDelete
 
@@ -93,6 +95,14 @@ struct EditTaskView: View {
                     } label: {
                         Label("Delete Task", systemImage: "trash")
                     }
+                    .alert("Delet Task?", isPresented: $showDeleteConfirm) {
+                        Button("Delete", role: .destructive) {
+                            Task { await deleteTask() }
+                        }
+                        Button("Cancel", role: .cancel) { }
+                    } message: {
+                        Text("This action can’t be undone.")
+                    }
                     .buttonStyle(.bordered)
                     .tint(Color.red)
                     Spacer()
@@ -117,21 +127,14 @@ struct EditTaskView: View {
         }
         .padding(20)
         .frame(minWidth: 560, minHeight: 420)
-        .animation(.snappy, value: message)
-        .confirmationDialog(
-            "Delete this task?",
-            isPresented: $showDeleteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Delete Task", role: .destructive) {
-                onDelete()
-                dismiss()
-            }
-
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("This action cannot be undone.")
-        }
+        .animation(.snappy, value: message)    }
+    
+    private func nextSortIndex(for status: TaskStatus) -> Int {
+        let maxIndex = allTasks
+            .filter { $0.status == status }
+            .map(\.sortIndex)
+            .max() ?? -1
+        return maxIndex + 1
     }
     
     private func updateTask() async {
@@ -147,6 +150,15 @@ struct EditTaskView: View {
         do {
             let newDetails = details.trimmingCharacters(in: .whitespacesAndNewlines)
             
+            let sortIndexToSend: Int
+            if status != task.status {
+                // moving across columns via full edit: append to end of destination column
+                sortIndexToSend = nextSortIndex(for: status)
+            } else {
+                // full edit without move: keep current position
+                sortIndexToSend = task.sortIndex
+            }
+            
             let resp = try await taskService.updateTask(
                 token: token,
                 projectId: projectID,
@@ -154,15 +166,16 @@ struct EditTaskView: View {
                 details: newDetails,
                 status: status,
                 assigneeID: assigneeId,
-                difficulty: Int(difficulty)
+                difficulty: Int(difficulty),
+                sortIndex: sortIndexToSend
             )
             
             onSave(resp)
             dismiss()
-        } catch let error as SkillError {
+        } catch let error as TaskError {
             switch error {
-            case .skillNotFound:
-                message = "Skill not found"
+            case .taskNotFound:
+                message = "Task not found"
                 
             case .serverError:
                 message = "Server error. Please try again."
@@ -173,26 +186,91 @@ struct EditTaskView: View {
             shakeTrigger += 1
         }
     }
+    
+    private func deleteTask() async {
+        guard let token = KeychainService.loadToken() else {
+            message = "Missing token. Please log in again."
+            shakeTrigger += 1
+            return
+        }
+
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            try await taskService.deleteTask(
+                token: token,
+                projectId: projectID,
+                taskId: task.id
+            )
+
+            onDelete()
+            dismiss()
+        } catch let error as TaskError {
+            switch error {
+            case .taskNotFound:
+                message = "Task not found"
+            case .serverError:
+                message = "Server error. Please try again."
+            }
+            shakeTrigger += 1
+        } catch {
+            message = "Failed to delete task. Please try again."
+            shakeTrigger += 1
+        }
+    }
 }
 
 #Preview {
-    EditTaskView(
-        task: TaskItem(
-            id: UUID(),
-            title: "Fix navigation bug",
-            details: "Tapping back pops two levels in certain flows.",
-            status: TaskStatus.backlog,
-            assigneeUsername: nil,
-            difficulty: 3,
-            createdAt: Date(),
-            sortIndex: 0
-        ),
-        members: [
+        let members: [ProjectMember] = [
             ProjectMember(id: UUID(), username: "lakshya7900", roleKey: "frontend"),
             ProjectMember(id: UUID(), username: "alex", roleKey: "backend")
-        ],
-        projectID: UUID(),
+        ]
+
+        let projectID = UUID()
+
+        let tasks: [TaskItem] = [
+            TaskItem(
+                id: UUID(),
+                title: "Fix navigation bug",
+                details: "Tapping back pops two levels in certain flows.",
+                status: .backlog,
+                assigneeId: nil,
+                assigneeUsername: nil,
+                difficulty: 3,
+                createdAt: Date(),
+                sortIndex: 0
+            ),
+            TaskItem(
+                id: UUID(),
+                title: "Refactor TaskService",
+                details: "Move DTO mapping into a single place.",
+                status: .backlog,
+                assigneeId: members[0].id,
+                assigneeUsername: members[0].username,
+                difficulty: 2,
+                createdAt: Date(),
+                sortIndex: 1
+            ),
+            TaskItem(
+                id: UUID(),
+                title: "Implement UpdateTask ordering",
+                details: "Ensure sortIndex is stable across edits.",
+                status: .inProgress,
+                assigneeId: members[1].id,
+                assigneeUsername: members[1].username,
+                difficulty: 4,
+                createdAt: Date(),
+                sortIndex: 0
+            )
+        ]
+    
+    EditTaskView(
+        task: tasks[0],
+        members: members,
+        projectID: projectID,
+        allTasks: tasks,
         onSave: { _ in },
-        onDelete: {}
+        onDelete: { }
     )
 }

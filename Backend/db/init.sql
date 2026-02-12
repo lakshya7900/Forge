@@ -1,4 +1,5 @@
 create extension if not exists pgcrypto;
+create type invite_status as enum ('pending', 'accepted', 'declined', 'canceled');
 
 create table if not exists users (
   id uuid primary key default gen_random_uuid(),
@@ -41,6 +42,8 @@ create table if not exists projects (
   name text not null,
   description text not null default '',
   owner_id uuid not null references users(id) on delete cascade,
+  is_pinned boolean default false,
+  sort_index int not null default 0,
   created_at timestamptz not null default now()
 );
 
@@ -64,6 +67,27 @@ create table if not exists tasks (
   sort_index int not null default 0,
   created_at timestamptz not null default now()
 );
+
+create table if not exists project_invites (
+  id uuid primary key default gen_random_uuid(),
+
+  project_id uuid not null references projects(id) on delete cascade,
+
+  inviter_id uuid not null references users(id) on delete cascade,
+  invitee_id uuid not null references users(id) on delete cascade,
+
+  role_key text not null default 'member',
+  status invite_status not null default 'pending',
+
+  created_at timestamptz not null default now(),
+  responded_at timestamptz null,
+
+  -- prevent inviting same user to same project multiple times (regardless of status)
+  unique (project_id, invitee_id)
+);
+
+create index if not exists idx_project_invites_invitee on project_invites(invitee_id, status, created_at desc);
+create index if not exists idx_project_invites_project on project_invites(project_id, status, created_at desc);
 
 create index if not exists idx_tasks_project_id on tasks(project_id);
 create index if not exists idx_tasks_project_status on tasks(project_id, status);

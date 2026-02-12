@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum TaskStatus: String, Codable, CaseIterable, Identifiable {
-    case backlog, inProgress, blocked, done
+    case backlog, inProgress, done, blocked
     var id: String { rawValue }
 
     var title: String {

@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 )
 
 // ========= Task DTOs (responses) =========
@@ -54,7 +54,7 @@ func (h *Handler) AddTask(c *gin.Context) {
 		return
 	}
 
-	projectIDStr := strings.TrimSpace(c.Param("id"))
+	projectIDStr := strings.TrimSpace(c.Param("projectId"))
 	projectID, projIdErr := uuid.Parse(projectIDStr)
 	if projIdErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid project id"})
@@ -203,10 +203,21 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	projectID := strings.ToLower(strings.TrimSpace(c.Param("projectId")))
-	taskID := strings.ToLower(strings.TrimSpace(c.Param("taskId")))
-	if projectID == "" || taskID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing ids"})
+	projectIDStr := strings.TrimSpace(c.Param("projectId"))
+	taskIDStr := strings.TrimSpace(c.Param("taskId"))
+	if projectIDStr == "" || taskIDStr == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing project or task id"})
+		return
+	}
+
+	projectUUID, err := uuid.Parse(strings.ToLower(projectIDStr))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid project id"})
+		return
+	}
+	taskUUID, err := uuid.Parse(strings.ToLower(taskIDStr))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid task id"})
 		return
 	}
 
@@ -216,9 +227,14 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-    // Nothing to update?
-	if req.Details == nil && req.Status == nil && req.AssigneeID == nil && req.Difficulty == nil && req.SortIndex == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "no fields to update"})
+    // sortIndex is ALWAYS required (all edit modes provide it)
+	if req.SortIndex == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing sort_index"})
+		return
+	}
+
+	if *req.SortIndex < 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort_index"})
 		return
 	}
 
@@ -243,6 +259,7 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 	ctx, cancel := contextTimeout(c, 8*time.Second)
 	defer cancel()
 
+	// Must be a project member
 	var allowed bool
 	if err := h.DB.QueryRow(ctx, `
 		select exists (
@@ -251,7 +268,7 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 			where project_id = $1
 			and user_id::text = $2
 		)
-	`, projectID, uid).Scan(&allowed); err != nil {
+	`, projectUUID, uid).Scan(&allowed); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
@@ -260,87 +277,266 @@ func (h *Handler) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	setParts := make([]string, 0, 6)
-	args := make([]any, 0, 8)
-	i := 1
+	// Fetch current status + sort_index (needed for stable reindexing)
+	var oldStatus string
+	var oldIndex int
+	if err := h.DB.QueryRow(ctx, `
+		select status, sort_index
+		from tasks
+		where project_id = $1 and id = $2
+	`, projectUUID, taskUUID).Scan(&oldStatus, &oldIndex); err != nil {
+		if err == pgx.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": "task not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
 
+	newStatus := oldStatus
+	if req.Status != nil {
+		newStatus = *req.Status
+	}
+	newIndex := *req.SortIndex
+
+
+	// Normalize fields
+	var newDetails *string
 	if req.Details != nil {
 		d := strings.TrimSpace(*req.Details)
-		setParts = append(setParts, fmt.Sprintf("details = $%d", i))
-		args = append(args, d)
-		i++
+		newDetails = &d
 	}
-	if req.Status != nil {
-		setParts = append(setParts, fmt.Sprintf("status = $%d", i))
-		args = append(args, *req.Status)
-		i++
-	}
-	if req.Difficulty != nil {
-		setParts = append(setParts, fmt.Sprintf("difficulty = $%d", i))
-		args = append(args, *req.Difficulty)
-		i++
-	}
-	if req.SortIndex != nil {
-		setParts = append(setParts, fmt.Sprintf("sort_index = $%d", i))
-		args = append(args, *req.SortIndex)
-		i++
-	}
+	
+	var newDiff *int
+	if req.Difficulty != nil { newDiff = req.Difficulty }
 
-    // assignee_id: allow null (= unassigned)
-    // - If field omitted => don't touch it
-    // - If field present null => set NULL
-    // - If field present "uuid" => set to that uuid
+    // Assignee behavior:
+	// - If field omitted => keep as-is
+	// - If provided as "" => set NULL (unassigned)
+	// - If provided as uuid string => set that uuid
+	assigneeMode := "keep" // keep | null | set
+	var assigneeVal any = nil
 	if req.AssigneeID != nil {
 		v := strings.TrimSpace(*req.AssigneeID)
 		if v == "" {
-			// treat "" as unassigned too (optional convenience)
-			setParts = append(setParts, "assignee_id = NULL")
+			assigneeMode = "null"
+			assigneeVal = nil
 		} else {
-			setParts = append(setParts, fmt.Sprintf("assignee_id = $%d::uuid", i))
-			args = append(args, v)
-			i++
+			assigneeMode = "set"
+			assigneeVal = strings.ToLower(v)
 		}
 	}
 
-    // IMPORTANT: ensure the task belongs to that project
-    // also you’ll later add membership check here if needed
-	args = append(args, projectID)
-	args = append(args, taskID)
-
-	q := fmt.Sprintf(`
-		update tasks
-		set %s
-		where project_id = $%d::uuid and id = $%d::uuid
-		returning
-			id::text,
-			title,
-			details,
-			status,
-			assignee_id::text,
-			difficulty,
-			sort_index,
-			created_at
-	`, strings.Join(setParts, ", "), i, i+1)
+	// Reindex + update in a single statement.
+	// This keeps sort_index unique within each (project_id, status) bucket.
 
 	var out Task
 	var createdAt time.Time
-	err := h.DB.QueryRow(ctx, q, args...).Scan(
+	
+	err = h.DB.QueryRow(ctx, `
+		with cur as (
+			select id, project_id, status as old_status, sort_index as old_index
+			from tasks
+			where project_id = $1 and id = $2
+		),
+		move_same as (
+			-- Reorder within the same status
+			update tasks t
+			set sort_index = case
+				when (select $4::int) > (select old_index from cur)
+					and t.sort_index > (select old_index from cur)
+					and t.sort_index <= (select $4::int)
+					then t.sort_index - 1
+				when (select $4::int) < (select old_index from cur)
+					and t.sort_index >= (select $4::int)
+					and t.sort_index < (select old_index from cur)
+					then t.sort_index + 1
+				else t.sort_index
+			end
+			where t.project_id = $1
+				and t.status = (select old_status from cur)
+				and t.id <> (select id from cur)
+				and (select $3) = (select old_status from cur)
+		),
+		move_cross_old as (
+			-- Close gap in old status when changing status
+			update tasks t
+			set sort_index = t.sort_index - 1
+			where t.project_id = $1
+				and t.status = (select old_status from cur)
+				and t.sort_index > (select old_index from cur)
+				and (select $3) <> (select old_status from cur)
+		),
+		move_cross_new as (
+			-- Make room in new status when changing status
+			update tasks t
+			set sort_index = t.sort_index + 1
+			where t.project_id = $1
+				and t.status = (select $3)
+				and t.sort_index >= (select $4::int)
+				and (select $3) <> (select old_status from cur)
+		),
+		updated as (
+			update tasks
+			set
+				details = coalesce($5, details),
+				status = $3,
+				sort_index = $4::int,
+				difficulty = coalesce($6, difficulty),
+				assignee_id = case
+					when $7 = 'keep' then assignee_id
+					when $7 = 'null' then null
+					else $8::uuid
+				end
+			where project_id = $1 and id = $2
+			returning *
+		)
+		select
+			u.id::text,
+			u.project_id::text,
+			u.title,
+			u.details,
+			u.status,
+			u.assignee_id::text,
+			usr.username,
+			u.difficulty,
+			u.sort_index,
+			u.created_at
+		from updated u
+		left join users usr on usr.id = u.assignee_id
+	`,
+		projectUUID,
+		taskUUID,
+		newStatus,
+		newIndex,
+		newDetails,
+		newDiff,
+		assigneeMode,
+		assigneeVal,
+	).Scan(
 		&out.ID,
+		&out.ProjectID,
 		&out.Title,
 		&out.Details,
 		&out.Status,
 		&out.AssigneeID,
+		&out.AssigneeUsername,
 		&out.Difficulty,
 		&out.SortIndex,
 		&createdAt,
 	)
+
 	if err != nil {
+		if err == pgx.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error": "task not found"})
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
 
 	out.CreatedAt = createdAt.UTC().Format(time.RFC3339)
 	c.JSON(http.StatusOK, out)
+}
+
+func (h *Handler) DeleteTask(c *gin.Context) {
+	uidAny, ok := c.Get("uid")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+		return
+	}
+	uid, ok := uidAny.(string)
+	if !ok || uid == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+		return
+	}
+
+	projectIDStr := strings.TrimSpace(c.Param("projectId"))
+	taskIDStr := strings.TrimSpace(c.Param("taskId"))
+	if projectIDStr == "" || taskIDStr == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing project or task id"})
+		return
+	}
+
+	projectUUID, err := uuid.Parse(strings.ToLower(projectIDStr))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid project id"})
+		return
+	}
+	taskUUID, err := uuid.Parse(strings.ToLower(taskIDStr))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid task id"})
+		return
+	}
+
+	ctx, cancel := contextTimeout(c, 8*time.Second)
+	defer cancel()
+
+	var allowed bool
+	if err := h.DB.QueryRow(ctx, `
+		select exists (
+			select 1
+			from projects_members
+			where project_id = $1
+			and user_id::text = $2
+		)
+	`, projectUUID, uid).Scan(&allowed); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	if !allowed {
+		c.JSON(http.StatusForbidden, gin.H{"error": "not a project member"})
+		return
+	}
+
+	tx, err := h.DB.Begin(ctx)
+    if err != nil { c.JSON(http.StatusInternalServerError, gin.H{"error":"server error"}); return }
+    defer tx.Rollback(ctx)
+
+    // 1) read the task's status + sort_index (and ensure it belongs to project)
+    var status string
+    var deletedSort int
+    err = tx.QueryRow(ctx, `
+        select status, sort_index
+        from tasks
+        where id::text = $1 and project_id::text = $2
+    `, taskUUID, projectUUID).Scan(&status, &deletedSort)
+    if err != nil {
+		if err == pgx.ErrNoRows {
+			c.JSON(http.StatusNotFound, gin.H{"error":"task not found"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error":"server error"}); 
+		return
+    }
+
+    // 2) delete the task
+    cmd, err := tx.Exec(ctx, `
+        delete from tasks
+        where id::text = $1 and project_id::text = $2
+    `, taskUUID, projectUUID)
+    if err != nil { c.JSON(http.StatusInternalServerError, gin.H{"error":"server error"}); return }
+    if cmd.RowsAffected() == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"error":"task not found"})
+        return
+    }
+
+    // 3) close the gap in that column
+    _, err = tx.Exec(ctx, `
+        update tasks
+        set sort_index = sort_index - 1
+        where project_id::text = $1
+			and status = $2
+			and sort_index > $3
+    `, projectUUID, status, deletedSort)
+    if err != nil { c.JSON(http.StatusInternalServerError, gin.H{"error":"server error"}); return }
+
+    if err := tx.Commit(ctx); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error":"server error"}); return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"ok": true, "status": status})
 }
 
 func isValidTaskStatus(s string) bool {

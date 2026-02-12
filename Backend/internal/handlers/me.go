@@ -72,10 +72,28 @@ type updateEducationReq struct {
 
 func (h *Handler) GetProfile(c *gin.Context) {
     fmt.Print("Getting profile")
-	uidAny, _ := c.Get("uid")
-	usrAny, _ := c.Get("usr")
-	uid := uidAny.(string)
-	usr := usrAny.(string)
+	uidAny, ok := c.Get("uid")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+		return
+	}
+	uid, ok := uidAny.(string)
+	if !ok || uid == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+		return
+	}
+
+	usrAny, ok := c.Get("usr")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+		return
+	}
+
+	usr, ok := usrAny.(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+		return
+	}
 
     fmt.Print("Got user id")
 

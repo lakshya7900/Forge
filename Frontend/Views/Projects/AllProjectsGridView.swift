@@ -13,6 +13,8 @@ struct AllProjectsGridView: View {
 
     let projects: [Project]
     let onSelect: (UUID) -> Void
+    
+    @State private var projectService = ProjectService()
 
     @State private var editingProjectId: UUID?
     @State private var deletingProjectId: UUID?
@@ -31,7 +33,7 @@ struct AllProjectsGridView: View {
                     ForEach(sortedProjects) { project in
                         ProjectTile(
                             project: project,
-                            onPin: { togglePin(project.id) },
+                            onPin: { Task { await togglePin(project.id) }},
                             onEdit: { editingProjectId = project.id },
                             onDelete: { deletingProjectId = project.id }
                         )
@@ -97,11 +99,23 @@ struct AllProjectsGridView: View {
         }
     }
 
-    private func togglePin(_ id: UUID) {
-        guard let project = projectStore.projects.first(where: { $0.id == id }) else { return }
-        var updated = project
-        updated.isPinned.toggle()
-        projectStore.upsert(updated)
+    private func togglePin(_ id: UUID) async {
+        guard let token = KeychainService.loadToken() else { return }
+            guard let current = projectStore.projects.first(where: { $0.id == id }) else { return }
+
+            // optimistic update
+            var updated = current
+            updated.isPinned.toggle()
+            projectStore.upsert(updated)
+
+            do {
+                try await projectService.pinProject(token: token, id: id, pin: updated.isPinned)
+            } catch {
+                // revert if backend fails
+                projectStore.upsert(current)
+                // optionally show UI message/toast
+                // complaint = "Failed to update pin"
+            }
     }
 }
 

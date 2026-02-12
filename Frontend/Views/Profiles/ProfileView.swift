@@ -12,6 +12,7 @@ struct ProfileView: View {
     @Environment(ProjectStore.self) private var projectStore
     
     @State private var profileService = ProfileService()
+    @State private var projectService = ProjectService()
 
     @State private var profile: UserProfile? = nil
     @State private var isLoadingProfile = false
@@ -46,6 +47,7 @@ struct ProfileView: View {
         .modifier(ProfileSheets(
             profile: $profile,
             profileService: profileService,
+            projectService: projectService,
             showAddSkill: $showAddSkill,
             showManageSkills: $showManageSkills,
             showAddEducation: $showAddEducation,
@@ -112,6 +114,7 @@ struct ProfileView: View {
         @Binding var profile: UserProfile?
 
         let profileService: ProfileService
+        let projectService: ProjectService
 
         @Binding var showAddSkill: Bool
         @Binding var showManageSkills: Bool
@@ -195,12 +198,30 @@ struct ProfileView: View {
                 }
 
                 .sheet(isPresented: $showEditProjects) {
-                    ManageProjectsView(projects: Binding(
-                        get: { projectStore.projects },
-                        set: { projectStore.projects = $0 }
-                    )) {
-                        projectStore.save()
-                    }
+                    ManageProjectsView(
+                        projects: Binding(
+                            get: { projectStore.projects },
+                            set: { newValue in projectStore.projects = newValue }
+                        ),
+                        onReorder: { orderedIds in
+                            for idx in projectStore.projects.indices {
+                                projectStore.projects[idx].sortIndex = idx
+                            }
+
+                            Task {
+                                guard let token = KeychainService.loadToken() else {
+                                    return
+                                }
+                                
+                                do {
+                                    try await projectService.reorderProject(token: token, orderedIds: orderedIds)
+                                    projectStore.save()
+                                } catch {
+                                    print("Error")
+                                }
+                            }
+                        }
+                    )
                     .frame(minWidth: 520, minHeight: 520)
                 }
 
@@ -464,7 +485,10 @@ struct ProfileView: View {
             if projectStore.projects.isEmpty {
                 emptyRow("No projects yet.")
             } else {
-                let all = projectStore.projects
+                let all = projectStore.projects.sorted {a, b in
+                    if a.sortIndex != b.sortIndex { return a.sortIndex < b.sortIndex }
+                    return a.createdAt > b.createdAt
+                }
                 let shownCount = min(all.count, showAllProjects ? all.count : projectsCollapsedCount)
                 let visible = Array(all.prefix(shownCount))
 
@@ -519,11 +543,6 @@ struct ProfileView: View {
             }
 
             Spacer()
-
-            if p.isPinned {
-                Image(systemName: "pin.fill")
-                    .foregroundStyle(.secondary)
-            }
         }
         .padding(12)
         .background(RoundedRectangle(cornerRadius: 14).fill(.regularMaterial))
@@ -700,8 +719,6 @@ struct ProfileView: View {
     ])
 
     let session = SessionState()
-    // If you have login(username:), use it so logout menu behaves in preview:
-    // session.login(username: "lakshya")
 
     ProfileView()
         .environment(session)

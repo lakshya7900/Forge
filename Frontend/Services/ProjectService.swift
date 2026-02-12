@@ -14,6 +14,14 @@ struct ProjectResponse: Decodable {
     let owner_id: String
     let members: [ProjectMember]
     let tasks: [TaskDTO]
+    let is_pinned: Bool
+    let sort_index: Int
+}
+
+struct EditProjectResponse: Decodable {
+    let id: String
+    let name: String
+    let description: String
 }
 
 struct CreateProjectRequest: Encodable {
@@ -27,10 +35,8 @@ struct EditProjectRequest: Encodable {
     let description: String
 }
 
-struct EditProjectResponse: Decodable {
-    let id: String
-    let name: String
-    let description: String
+struct ReorderProjectRequest: Encodable {
+    let project_ids: [String]
 }
 
 final class ProjectService {
@@ -65,6 +71,8 @@ final class ProjectService {
                 description: dto.description,
                 members: dto.members,
                 tasks: dto.tasks.map{ TaskItem(from: $0) },
+                isPinned: dto.is_pinned,
+                sortIndex: dto.sort_index,
                 ownerMemberId: ownerID
             )
         }
@@ -103,7 +111,8 @@ final class ProjectService {
             name: dto.name,
             description: dto.description,
             members: dto.members,
-            tasks: [],
+            tasks: dto.tasks.map { TaskItem(from: $0) },
+            sortIndex: dto.sort_index,
             ownerMemberId: owner_id
         )
     }
@@ -140,6 +149,41 @@ final class ProjectService {
         var req = URLRequest(url: url)
         req.httpMethod = "DELETE"
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        let code = (resp as? HTTPURLResponse)?.statusCode ?? -1
+        
+        guard code == 200 else {
+            throw APIError.badStatus(code, String(data: data, encoding: .utf8) ?? "")
+        }
+    }
+    
+    func pinProject(token: String, id: UUID, pin: Bool) async throws {
+        let url = AppConfig.apiBaseURL
+            .appendingPathComponent("/me/projects/\(id.uuidString.lowercased())/\(String(pin).lowercased())")
+        
+        var req = URLRequest(url: url)
+        req.httpMethod = "PATCH"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        let code = (resp as? HTTPURLResponse)?.statusCode ?? -1
+        
+        guard code == 200 else {
+            throw APIError.badStatus(code, String(data: data, encoding: .utf8) ?? "")
+        }
+    }
+    
+    func reorderProject(token: String, orderedIds: [UUID]) async throws {
+        let url = AppConfig.apiBaseURL.appendingPathComponent("/me/projects/reorder")
+        
+        var req = URLRequest(url: url)
+        req.httpMethod = "PATCH"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body = ReorderProjectRequest(project_ids: orderedIds.map { $0.uuidString.lowercased() })
+        req.httpBody = try JSONEncoder().encode(body)
         
         let (data, resp) = try await URLSession.shared.data(for: req)
         let code = (resp as? HTTPURLResponse)?.statusCode ?? -1

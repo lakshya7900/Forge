@@ -16,6 +16,7 @@ struct Project: Codable, Identifiable, Equatable {
     var tasks: [TaskItem]
     var createdAt: Date = Date()
     var isPinned: Bool = false
+    var sortIndex: Int = 0
     var customRoles: [String] = []
     var ownerMemberId: UUID
 }

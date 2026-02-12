@@ -24,6 +24,8 @@ type Project struct {
 	OwnerId string 			`json:"owner_id"`
 	Members []Member 		`json:"members"`
 	Tasks []Task 			`json:"tasks"`
+	IsPinned bool			`json:"is_pinned"`
+	SortIndex int			`json:"sort_index"`
 }
 
 type EditProjectDetail struct {
@@ -42,6 +44,10 @@ type editProjectDetailsReq struct {
 	ID string 			`json:"id"`
 	Name string 		`json:"name"`
 	Description string	`json:"description"`
+}
+
+type reorderProjectsReq struct {
+    ProjectIDs []string `json:"project_ids"`
 }
 
 func (h *Handler) GetProjects(c *gin.Context) {
@@ -69,11 +75,13 @@ func (h *Handler) GetProjects(c *gin.Context) {
 			p.id::text,
 			p.name,
 			p.description,
-			p.owner_id::text
+			p.owner_id::text,
+			p.is_pinned,
+			p.sort_index
 		from projects_members pm
 		join projects p on p.id = pm.project_id
 		where pm.user_id = $1
-		order by p.created_at desc, lower(p.name) asc
+		order by p.sort_index asc, p.created_at desc, lower(p.name) asc
 	`, userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
@@ -86,7 +94,7 @@ func (h *Handler) GetProjects(c *gin.Context) {
 
 	for rows.Next() {
 		var p Project
-		if err := rows.Scan(&p.ID, &p.Name, &p.Description, &p.OwnerId); err != nil {
+		if err := rows.Scan(&p.ID, &p.Name, &p.Description, &p.OwnerId, &p.IsPinned, &p.SortIndex); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 			return
 		}
@@ -284,11 +292,17 @@ func (h *Handler) CreateProject(c *gin.Context) {
 	defer tx.Rollback(ctx)
 
 	var projectID string
+	var sortIndex int
 	if err := h.DB.QueryRow(ctx,
-		`insert into projects (name, description, owner_id)
-		values ($1, $2, $3)
-		returning id::text
-	`, name, req.Description, ownerID).Scan(&projectID); err != nil {
+		`insert into projects (name, description, owner_id, sort_index)
+		values (
+			$1,
+			$2,
+			$3,
+			coalesce((select max(sort_index) + 1 from projects where owner_id = $3), 0)
+			)
+		returning id::text, sort_index
+	`, name, req.Description, ownerID).Scan(&projectID, &sortIndex); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
@@ -314,6 +328,9 @@ func (h *Handler) CreateProject(c *gin.Context) {
 		Description: req.Description,
 		OwnerId: ownerID,
 		Members: []Member{members},
+		Tasks: []Task{},
+		IsPinned: false,
+		SortIndex: sortIndex,
 	})
 }
 
@@ -393,7 +410,7 @@ func (h *Handler) DeleteProject(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
 	}
 
-	id := strings.TrimSpace(c.Param("id"))
+	id := strings.TrimSpace(c.Param("projectId"))
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "missing id"})
 		return
@@ -424,5 +441,153 @@ func (h *Handler) DeleteProject(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"ok": true})
+}
 
+func (h *Handler) PinProject(c *gin.Context) {
+	ownerIDAny, ok := c.Get("uid")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+	}
+	ownerID, ok := ownerIDAny.(string)
+	if !ok || ownerID == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+	}
+
+	id := strings.TrimSpace(c.Param("projectId"))
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing id"})
+		return
+	}
+
+	pin := strings.TrimSpace(c.Param("pin"))
+	if pin == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing id"})
+		return
+	}
+	if pin != "true" && pin != "false" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid pin"})
+		return
+	}
+
+	ctx, cancel := contextTimeout(c, 5*time.Second)
+	defer cancel()
+
+	tx, err := h.DB.Begin(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	defer tx.Rollback(ctx)
+
+	cmd, err := h.DB.Exec(ctx,
+		`update projects 
+		set is_pinned = $1::boolean
+		where id = $2::uuid and owner_id = $3
+	`, pin, id, ownerID,)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	if cmd.RowsAffected() == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "project not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"ok": true})
+}
+
+
+func (h *Handler) ReorderProjects(c *gin.Context) {
+    ownerIDAny, ok := c.Get("uid")
+    if !ok {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+        return
+    }
+    ownerID, ok := ownerIDAny.(string)
+    if !ok || ownerID == "" {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+        return
+    }
+
+    var req reorderProjectsReq
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
+        return
+    }
+
+    if len(req.ProjectIDs) == 0 {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "missing project_ids"})
+        return
+    }
+
+    // Normalize + validate IDs (no empty strings)
+    ids := make([]string, 0, len(req.ProjectIDs))
+    seen := make(map[string]struct{}, len(req.ProjectIDs))
+    for _, raw := range req.ProjectIDs {
+        id := strings.ToLower(strings.TrimSpace(raw))
+        if id == "" {
+            c.JSON(http.StatusBadRequest, gin.H{"error": "invalid project id"})
+            return
+        }
+        if _, exists := seen[id]; exists {
+            continue
+        }
+        seen[id] = struct{}{}
+        ids = append(ids, id)
+    }
+
+    ctx, cancel := contextTimeout(c, 8*time.Second)
+    defer cancel()
+
+    tx, err := h.DB.Begin(ctx)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+        return
+    }
+    defer tx.Rollback(ctx)
+
+    // Ensure all provided projects belong to this owner
+    var count int
+    if err := tx.QueryRow(ctx,
+        `select count(*) from projects where owner_id = $1::uuid and id::text = any($2)
+		`, ownerID, ids,
+    ).Scan(&count); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+        return
+    }
+
+    if count != len(ids) {
+        c.JSON(http.StatusNotFound, gin.H{"error": "project not found"})
+        return
+    }
+
+    // Update sort_index based on the provided order
+    cmd, err := tx.Exec(ctx, `
+        with ord as (
+			select *
+			from unnest($1::uuid[]) with ordinality as t(pid, ord)
+        )
+        update projects p
+        set sort_index = (ord.ord - 1)
+        from ord
+        where p.id = ord.pid
+		and p.owner_id = $2::uuid
+    `, ids, ownerID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+        return
+    }
+
+    if int(cmd.RowsAffected()) != len(ids) {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+        return
+    }
+
+    if err := tx.Commit(ctx); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"ok": true})
 }

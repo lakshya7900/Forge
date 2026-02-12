@@ -6,6 +6,11 @@
 //
 
 import Foundation
+    
+enum TaskError: Error {
+    case taskNotFound
+    case serverError
+}
 
 struct CreateTaskRequest: Codable {
     let title: String
@@ -94,13 +99,45 @@ final class TaskService {
         req.httpBody = try JSONEncoder().encode(body)
         
         let (data, resp) = try await URLSession.shared.data(for: req)
-        let code = (resp as? HTTPURLResponse)?.statusCode ?? -1
-        
-        guard code == 200 else {
-            throw APIError.badStatus(code, String(data: data, encoding: .utf8) ?? "")
+        guard let http = resp as? HTTPURLResponse else {
+            throw AuthError.server
         }
         
-        let dto = try JSONDecoder().decode(TaskDTO.self, from: data)
-        return TaskItem(from: dto)
+        switch http.statusCode {
+        case 200:
+            let dto = try JSONDecoder().decode(TaskDTO.self, from: data)
+            return TaskItem(from: dto)
+            
+        case 404:
+            throw TaskError.taskNotFound
+            
+        default:
+            throw TaskError.serverError
+        }
+    }
+    
+    func deleteTask(token: String, projectId: UUID, taskId: UUID) async throws {
+        let url = AppConfig.apiBaseURL
+            .appendingPathComponent("/me/projects/\(projectId.uuidString.lowercased())/tasks/\(taskId.uuidString.lowercased())")
+        
+        var req = URLRequest(url: url)
+        req.httpMethod = "DELETE"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let (_, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else {
+            throw AuthError.server
+        }
+        
+        switch http.statusCode {
+        case 200:
+            return
+        case 404:
+            throw TaskError.taskNotFound
+
+        default:
+            throw TaskError.serverError
+        }
     }
 }

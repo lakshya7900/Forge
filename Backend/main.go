@@ -81,11 +81,14 @@ func main() {
 	authed.GET("/projects", h.GetProjects)
 	authed.POST("/projects", h.CreateProject)
 	authed.PUT("/projects", h.EditProjectDetails)
-	authed.DELETE("/projects/:id", h.DeleteProject)
+	authed.DELETE("/projects/:projectId", h.DeleteProject)
+	authed.PATCH("/projects/:projectId/:pin", h.PinProject)
+	authed.PATCH("/projects/reorder", h.ReorderProjects)
 
 	// Project Tasks
-	authed.POST("/projects/:id/tasks", h.AddTask)
+	authed.POST("/projects/:projectId/tasks", h.AddTask)
 	authed.PATCH("/projects/:projectId/tasks/:taskId", h.UpdateTask)
+	authed.DELETE("/projects/:projectId/tasks/:taskId", h.DeleteTask)
 
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	fmt.Printf("%s Server running on http://localhost:%s\n", time.Now().Format("2006/01/02 15:04:05"), cfg.Port)

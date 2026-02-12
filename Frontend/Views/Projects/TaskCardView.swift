@@ -15,6 +15,7 @@ struct TaskCardView: View {
     let onDelete: () -> Void
 
     @State private var local: TaskItem
+    @State private var showDeleteConfirm = false
 
     init(task: TaskItem,
          members: [ProjectMember],
@@ -76,34 +77,6 @@ struct TaskCardView: View {
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
         .contentShape(RoundedRectangle(cornerRadius: 12))
         .onTapGesture { onEdit() }
-        .contextMenu {
-            Button("Edit") { onEdit() }
-
-            Divider()
-
-            Picker("Move to", selection: Binding(
-                get: { local.status },
-                set: { newValue in local.status = newValue; commit() }
-            )) {
-                ForEach(TaskStatus.allCases) { s in
-                    Text(s.title).tag(s)
-                }
-            }
-
-            Picker("Assignee", selection: Binding(
-                get: { local.assigneeUsername ?? "" },
-                set: { v in local.assigneeUsername = v.isEmpty ? nil : v; commit() }
-            )) {
-                Text("Unassigned").tag("")
-                ForEach(members) { m in
-                    Text(m.username).tag(m.username)
-                }
-            }
-
-            Divider()
-
-            Button("Delete", role: .destructive) { onDelete() }
-        }
         .onChange(of: task) { _, newTask in local = newTask }
     }
 

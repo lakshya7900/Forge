@@ -12,7 +12,7 @@ struct ManageProjectsView: View {
     @Environment(\.dismiss) private var dismiss
 
     @Binding var projects: [Project]
-    let onSave: () -> Void
+    let onReorder: (_ orderedProjectIDs: [UUID]) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -24,6 +24,8 @@ struct ManageProjectsView: View {
                 Spacer()
 
                 Button("Done") {
+                    let orderedIDs = projects.map { $0.id }
+                    onReorder(orderedIDs)
                     dismiss()
                 }
                 .keyboardShortcut(.defaultAction)
@@ -63,7 +65,6 @@ struct ManageProjectsView: View {
 
     private func move(from source: IndexSet, to destination: Int) {
         projects.move(fromOffsets: source, toOffset: destination)
-        onSave()
     }
 }
 
@@ -75,6 +76,6 @@ struct ManageProjectsView: View {
         Project(name: "C", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
     ]
 
-    return ManageProjectsView(projects: .constant(demo), onSave: {})
+    return ManageProjectsView(projects: .constant(demo), onReorder: { _ in })
         .frame(width: 560, height: 520)
 }
