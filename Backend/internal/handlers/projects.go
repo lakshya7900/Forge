@@ -12,20 +12,20 @@ import (
 
 // ========= Project DTOs (responses) =========
 type Member struct {
-	ID string 		`json:"id"`
+	ID       string `json:"id"`
 	Username string `json:"username"`
-	RoleKey string 	`json:"roleKey"`
+	RoleKey  string `json:"roleKey"`
 }
 
 type Project struct {
-    ID string 				`json:"id"`
-    Name string 			`json:"name"`
-    Description string 		`json:"description"`
-	OwnerId string 			`json:"owner_id"`
-	Members []Member 		`json:"members"`
-	Tasks []Task 			`json:"tasks"`
-	IsPinned bool			`json:"is_pinned"`
-	SortIndex int			`json:"sort_index"`
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	OwnerId     string   `json:"owner_id"`
+	Members     []Member `json:"members"`
+	Tasks       []Task   `json:"tasks"`
+	IsPinned    bool     `json:"is_pinned"`
+	SortIndex   int      `json:"sort_index"`
 }
 
 type EditProjectDetail struct {
@@ -36,28 +36,39 @@ type EditProjectDetail struct {
 
 // ========= Requests =========
 type createProjectReq struct {
-    Name string 		`json:"name"`
-	Description string	`json:"description"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 type editProjectDetailsReq struct {
-	ID string 			`json:"id"`
-	Name string 		`json:"name"`
-	Description string	`json:"description"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 type reorderProjectsReq struct {
-    ProjectIDs []string `json:"project_ids"`
+	ProjectIDs []string `json:"project_ids"`
 }
 
-func (h *Handler) GetProjects(c *gin.Context) {
+// Helper function to extract and validate user ID from context
+func getAuthUID(c *gin.Context) (string, bool) {
 	userIDAny, ok := c.Get("uid")
 	if !ok {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
+		return "", false
 	}
 	userID, ok := userIDAny.(string)
 	if !ok || userID == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+		return "", false
+	}
+	return userID, true
+}
+
+func (h *Handler) GetProjects(c *gin.Context) {
+	userID, ok := getAuthUID(c)
+	if !ok {
+		return
 	}
 
 	ctx, cancel := contextTimeout(c, 5*time.Second)
@@ -255,19 +266,17 @@ func (h *Handler) CreateProject(c *gin.Context) {
 		return
 	}
 
-	ownerIDAny, ok := c.Get("uid")
+	ownerID, ok := getAuthUID(c)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
 		return
 	}
-	ownerID, ok := ownerIDAny.(string)
-	if !ok || ownerID == "" {
+
+	usrAny, _ := c.Get("usr")
+	usr, ok := usrAny.(string)
+	if !ok || usr == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
 		return
 	}
-	
-	usrAny, _ := c.Get("usr")
-	usr := usrAny.(string)
 
 	name := strings.TrimSpace(req.Name)
 	if name == "" {
@@ -323,32 +332,25 @@ func (h *Handler) CreateProject(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, Project{
-		ID: projectID,
-		Name: name,
+		ID:          projectID,
+		Name:        name,
 		Description: req.Description,
-		OwnerId: ownerID,
-		Members: []Member{members},
-		Tasks: []Task{},
-		IsPinned: false,
-		SortIndex: sortIndex,
+		OwnerId:     ownerID,
+		Members:     []Member{members},
+		Tasks:       []Task{},
+		IsPinned:    false,
+		SortIndex:   sortIndex,
 	})
 }
 
 func (h *Handler) EditProjectDetails(c *gin.Context) {
-	ownerIDAny, ok := c.Get("uid")
+	ownerID, ok := getAuthUID(c)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
-		return
-	}
-	ownerID, ok := ownerIDAny.(string)
-	if !ok || ownerID == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
 		return
 	}
 
 	var req editProjectDetailsReq
 	if err := c.ShouldBindJSON(&req); err != nil {
-		fmt.Print(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
 		return
 	}
@@ -366,7 +368,7 @@ func (h *Handler) EditProjectDetails(c *gin.Context) {
 	}
 
 	description := strings.TrimSpace(req.Description)
-	
+
 	ctx, cancel := contextTimeout(c, 5*time.Second)
 	defer cancel()
 
@@ -392,7 +394,6 @@ func (h *Handler) EditProjectDetails(c *gin.Context) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "project not found"})
 			return
 		}
-		fmt.Print(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
@@ -401,13 +402,9 @@ func (h *Handler) EditProjectDetails(c *gin.Context) {
 }
 
 func (h *Handler) DeleteProject(c *gin.Context) {
-	ownerIDAny, ok := c.Get("uid")
+	ownerID, ok := getAuthUID(c)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
-	}
-	ownerID, ok := ownerIDAny.(string)
-	if !ok || ownerID == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+		return
 	}
 
 	id := strings.TrimSpace(c.Param("projectId"))
@@ -429,7 +426,7 @@ func (h *Handler) DeleteProject(c *gin.Context) {
 	cmd, err := h.DB.Exec(ctx,
 		`delete from projects 
 		where id = $1::uuid and owner_id = $2
-	`, id, ownerID,)
+	`, id, ownerID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
@@ -483,7 +480,7 @@ func (h *Handler) PinProject(c *gin.Context) {
 		`update projects 
 		set is_pinned = $1::boolean
 		where id = $2::uuid and owner_id = $3
-	`, pin, id, ownerID,)
+	`, pin, id, ownerID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
@@ -497,97 +494,92 @@ func (h *Handler) PinProject(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"ok": true})
 }
 
-
 func (h *Handler) ReorderProjects(c *gin.Context) {
-    ownerIDAny, ok := c.Get("uid")
-    if !ok {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
-        return
-    }
-    ownerID, ok := ownerIDAny.(string)
-    if !ok || ownerID == "" {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
-        return
-    }
+	ownerID, ok := getAuthUID(c)
+	if !ok {
+		return
+	}
 
-    var req reorderProjectsReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
-        return
-    }
+	var req reorderProjectsReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
+		return
+	}
 
-    if len(req.ProjectIDs) == 0 {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "missing project_ids"})
-        return
-    }
+	if len(req.ProjectIDs) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing project_ids"})
+		return
+	}
 
-    // Normalize + validate IDs (no empty strings)
-    ids := make([]string, 0, len(req.ProjectIDs))
-    seen := make(map[string]struct{}, len(req.ProjectIDs))
-    for _, raw := range req.ProjectIDs {
-        id := strings.ToLower(strings.TrimSpace(raw))
-        if id == "" {
-            c.JSON(http.StatusBadRequest, gin.H{"error": "invalid project id"})
-            return
-        }
-        if _, exists := seen[id]; exists {
-            continue
-        }
-        seen[id] = struct{}{}
-        ids = append(ids, id)
-    }
+	// Normalize + validate IDs (no empty strings)
+	ids := make([]string, 0, len(req.ProjectIDs))
+	seen := make(map[string]struct{}, len(req.ProjectIDs))
+	for _, raw := range req.ProjectIDs {
+		id := strings.ToLower(strings.TrimSpace(raw))
+		if id == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid project id"})
+			return
+		}
+		if _, exists := seen[id]; exists {
+			continue
+		}
+		seen[id] = struct{}{}
+		ids = append(ids, id)
+	}
 
-    ctx, cancel := contextTimeout(c, 8*time.Second)
-    defer cancel()
+	ctx, cancel := contextTimeout(c, 8*time.Second)
+	defer cancel()
 
-    tx, err := h.DB.Begin(ctx)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-        return
-    }
-    defer tx.Rollback(ctx)
+	tx, err := h.DB.Begin(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	defer tx.Rollback(ctx)
 
-    // Ensure all provided projects belong to this owner
-    var count int
-    if err := tx.QueryRow(ctx,
-        `select count(*) from projects where owner_id = $1::uuid and id::text = any($2)
+	// Ensure all provided projects belong to this owner
+	var count int
+	if err := tx.QueryRow(ctx,
+		`select count(*) 
+		from projects 
+		where owner_id = $1::uuid 
+			and id::text = any($2)
 		`, ownerID, ids,
-    ).Scan(&count); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-        return
-    }
+	).Scan(&count); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
 
-    if count != len(ids) {
-        c.JSON(http.StatusNotFound, gin.H{"error": "project not found"})
-        return
-    }
+	if count != len(ids) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "project not found"})
+		return
+	}
 
-    // Update sort_index based on the provided order
-    cmd, err := tx.Exec(ctx, `
-        with ord as (
-			select *
-			from unnest($1::uuid[]) with ordinality as t(pid, ord)
+	// Update sort_index based on the provided order
+	cmd, err := tx.Exec(ctx, `
+        with ord(pid, ord) as (
+			select * from unnest($1::uuid[]) with ordinality
         )
         update projects p
         set sort_index = (ord.ord - 1)
         from ord
         where p.id = ord.pid
-		and p.owner_id = $2::uuid
+			and p.owner_id = $2::uuid
     `, ids, ownerID)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-        return
-    }
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
 
-    if int(cmd.RowsAffected()) != len(ids) {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-        return
-    }
+	if int(cmd.RowsAffected()) != len(ids) {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
 
-    if err := tx.Commit(ctx); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-        return
-    }
+	if err := tx.Commit(ctx); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
 
-    c.JSON(http.StatusOK, gin.H{"ok": true})
+	c.JSON(http.StatusOK, gin.H{"ok": true})
 }

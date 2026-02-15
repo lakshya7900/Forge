@@ -10,9 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"roadmate-api/internal/auth"
-	"roadmate-api/internal/db"
-	"roadmate-api/internal/handlers"
+	"forge-api/internal/auth"
+	"forge-api/internal/db"
+	"forge-api/internal/handlers"
 )
 
 func main() {
@@ -89,6 +89,19 @@ func main() {
 	authed.POST("/projects/:projectId/tasks", h.AddTask)
 	authed.PATCH("/projects/:projectId/tasks/:taskId", h.UpdateTask)
 	authed.DELETE("/projects/:projectId/tasks/:taskId", h.DeleteTask)
+
+	// Project Members
+	/// user search
+	authed.GET("/users/search", h.SearchUsers)
+
+	/// invites
+	authed.POST("/projects/:projectId/invites", h.CreateProjectInvite)
+	authed.GET("/invites", h.ListMyInvites)
+	authed.GET("/projects/:projectId/invites", h.ListProjectInvites)
+	authed.POST("/invites/:inviteId/accept", h.AcceptInvite)
+	authed.POST("/invites/:inviteId/decline", h.DeclineInvite)
+	authed.PATCH("/invites/:inviteId/cancel", h.CancelInvite)
+	authed.DELETE("/invites/:inviteId", h.DeleteInvite)
 
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	fmt.Printf("%s Server running on http://localhost:%s\n", time.Now().Format("2006/01/02 15:04:05"), cfg.Port)

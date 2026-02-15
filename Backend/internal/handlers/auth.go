@@ -8,31 +8,28 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 
-	"roadmate-api/internal/auth"
+	"forge-api/internal/auth"
 )
 
-type signupReq struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type loginReq struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type authResp struct {
+// ========= Member DTOs (responses) =========
+type Auth struct {
 	Token    string `json:"token"`
 	UserID   string `json:"userId"`
 	Username string `json:"username"`
 }
 
-type validUsernameResp struct {
-    Available bool `json:"available"`
+type ValidUsername struct {
+	Available bool `json:"available"`
+}
+
+// ========= Requests =========
+type authReq struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func (h *Handler) Signup(c *gin.Context) {
-	var req signupReq
+	var req authReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
 		return
@@ -76,11 +73,11 @@ func (h *Handler) Signup(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, authResp{Token: token, UserID: userID, Username: u})
+	c.JSON(http.StatusOK, Auth{Token: token, UserID: userID, Username: u})
 }
 
 func (h *Handler) Login(c *gin.Context) {
-	var req loginReq
+	var req authReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
 		return
@@ -121,7 +118,7 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, authResp{Token: token, UserID: userID, Username: u})
+	c.JSON(http.StatusOK, Auth{Token: token, UserID: userID, Username: u})
 }
 
 func (h *Handler) ValidUsername(c *gin.Context) {
@@ -133,7 +130,7 @@ func (h *Handler) ValidUsername(c *gin.Context) {
 
     // optional: enforce basic rules (so your UI doesn't accept junk)
     if len(username) < 3 {
-        c.JSON(http.StatusOK, validUsernameResp{Available: false})
+        c.JSON(http.StatusOK, ValidUsername{Available: false})
         return
     }
 
@@ -151,5 +148,5 @@ func (h *Handler) ValidUsername(c *gin.Context) {
         return
     }
 
-    c.JSON(http.StatusOK, validUsernameResp{Available: !exists})
+    c.JSON(http.StatusOK, ValidUsername{Available: !exists})
 }

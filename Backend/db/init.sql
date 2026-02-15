@@ -1,5 +1,13 @@
 create extension if not exists pgcrypto;
-create type invite_status as enum ('pending', 'accepted', 'declined', 'canceled');
+
+do $$
+begin
+    if not exists (select 1 from pg_type where typname = 'invite_status') then
+        create type invite_status as enum ('pending', 'accepted', 'declined', 'cancelled');
+    else
+        alter type invite_status add value if not exists 'declined';
+    end if;
+end $$;
 
 create table if not exists users (
   id uuid primary key default gen_random_uuid(),

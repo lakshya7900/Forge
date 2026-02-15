@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ProjectMembersView: View {
     @Binding var project: Project
+    
+    @State private var membersService = MembersService()
 
     @State private var showAddMember = false
     @State private var deletingMemberId: UUID?
@@ -18,44 +20,74 @@ struct ProjectMembersView: View {
 
     @State private var showAddRole = false
     @State private var newRoleName = ""
+    
+    // Invitations (local UI state for now)
+    @State private var pendingInvites: [ProjectInvite] = []
+    @State private var declinedInvites: [ProjectInvite] = []
+
+    struct ProjectInvite: Identifiable, Equatable {
+        let id: UUID
+        let username: String
+        let roleKey: String
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             header
             controls
-
-            if filteredMembers.isEmpty {
-                Text(emptyText)
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 8)
-                Spacer()
-            } else {
-                ScrollView {
-                    VStack(spacing: 10) {
-                        ForEach(filteredMembers) { member in
-                            MemberRow(
-                                member: member,
-                                roleOptions: roleOptions,
-                                isOwner: isOwner(member),
-                                onChangeRole: { newRoleKey in updateRole(memberId: member.id, roleKey: newRoleKey) },
-                                onRequestAddRole: { showAddRole = true },
-                                onDelete: isOwner(member) ? nil : { deletingMemberId = member.id }
-                            )
-                        }
+            
+            ScrollView {
+                VStack(spacing: 10) {
+                    // Invitations
+                    if !pendingInvites.isEmpty {
+                        inviteSection(
+                            title: "Pending invites",
+                            titleColor: Color.blue,
+                            subtitle: "Waiting for the user to accept",
+                            invites: pendingInvites,
+                            actionTitle: "Cancel",
+                            actionRole: .destructive,
+                            action: cancelInvite
+                        )
                     }
-                    .padding(.top, 6)
+
+                    if !declinedInvites.isEmpty {
+                        inviteSection(
+                            title: "Declined invites",
+                            titleColor: Color.red,
+                            subtitle: "You can remove these entries",
+                            invites: declinedInvites,
+                            actionTitle: "Delete",
+                            actionRole: .destructive,
+                            action: deleteDeclinedInvite
+                        )
+                    }
+                    
+                    ForEach(filteredMembers) { member in
+                        MemberRow(
+                            member: member,
+                            roleOptions: roleOptions,
+                            isOwner: isOwner(member),
+                            onChangeRole: { newRoleKey in updateRole(memberId: member.id, roleKey: newRoleKey) },
+                            onRequestAddRole: { showAddRole = true },
+                            onDelete: isOwner(member) ? nil : { deletingMemberId = member.id }
+                        )
+                    }
                 }
+                .padding(.top, 6)
             }
 
             Spacer(minLength: 0)
         }
         .padding(10)
+        .task { await getInvites() }
         .sheet(isPresented: $showAddMember) {
             AddMemberView(
+                projectId: project.id,
                 roleOptions: roleOptions,
                 onRequestAddRole: { showAddRole = true },
-                onAdd: { username, roleKey in
-                    addMember(username: username, roleKey: roleKey)
+                onInviteSent: { username, roleKey in
+                    addPendingInvite(username: username, roleKey: roleKey)
                 }
             )
         }
@@ -117,6 +149,132 @@ struct ProjectMembersView: View {
         }
     }
 
+    // MARK: - Invite
+    private func inviteSection(
+        title: String,
+        titleColor: Color,
+        subtitle: String,
+        invites: [ProjectInvite],
+        actionTitle: String,
+        actionRole: ButtonRole? = nil,
+        action: @escaping (ProjectInvite) -> Void
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundStyle(titleColor)
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+            }
+
+            VStack(spacing: 8) {
+                ForEach(invites) { inv in
+                    HStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(inv.username)
+                                .font(.subheadline.weight(.semibold))
+                            Text(displayRoleLabel(inv.roleKey))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Spacer()
+
+                        Button(role: actionRole) {
+                            action(inv)
+                        } label: {
+                            Text(actionTitle)
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                    }
+                    .padding(10)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .strokeBorder(.white.opacity(0.08), lineWidth: 1)
+                    )
+                }
+            }
+        }
+        .padding(14)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18)
+                .strokeBorder(.white.opacity(0.08), lineWidth: 1)
+        )
+        .padding(.top, 6)
+    }
+    
+    private func getInvites() async {
+        guard let token = KeychainService.loadToken() else {
+            print("Token error")
+            return
+        }
+
+        do {
+            // Expected to be implemented in MembersService:
+            // getProjectInvites(token:projectId:) -> ProjectInvitesResponse
+            let resp = try await membersService.getProjectInvites(token: token, projectId: project.id)
+
+            // Map backend invites into local UI models.
+            let pending: [ProjectInvite] = resp.pending.compactMap { inv in
+                guard let uuid = UUID(uuidString: inv.id.lowercased()) else { return nil }
+                let username = inv.invitee_username.trimmingCharacters(in: .whitespacesAndNewlines)
+                return ProjectInvite(id: uuid, username: username, roleKey: inv.role_key)
+            }
+
+            let declined: [ProjectInvite] = resp.declined.compactMap { inv in
+                guard let uuid = UUID(uuidString: inv.id.lowercased()) else { return nil }
+                let username = inv.invitee_username.trimmingCharacters(in: .whitespacesAndNewlines)
+                return ProjectInvite(id: uuid, username: username, roleKey: inv.role_key)
+            }
+            let acceptedMembers: [ProjectMember] = resp.accepted.compactMap { inv in
+                let uname = inv.invitee_username.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !uname.isEmpty else { return nil }
+
+                // Require a valid invitee_id UUID for consistency.
+                guard let memberUUID = UUID(uuidString: inv.invitee_id.lowercased()) else { return nil }
+                return ProjectMember(id: memberUUID, username: uname, roleKey: inv.role_key)
+            }
+
+
+            // Keep lists sorted for stable UI.
+            let pendingSorted = pending.sorted { $0.username.lowercased() < $1.username.lowercased() }
+            let declinedSorted = declined.sorted { $0.username.lowercased() < $1.username.lowercased() }
+
+            await MainActor.run {
+                // Upsert accepted members into the project member list
+                for m in acceptedMembers {
+                    if let idx = project.members.firstIndex(where: { $0.username.lowercased() == m.username.lowercased() }) {
+                        project.members[idx].roleKey = m.roleKey
+                    } else {
+                        project.members.append(m)
+                    }
+                }
+                
+                self.pendingInvites = pendingSorted
+                self.declinedInvites = declinedSorted
+            }
+        } catch {
+            // Non-fatal: just log for now.
+            print("getInvites failed:", error)
+        }
+    }
+
+    private func displayRoleLabel(_ roleKey: String) -> String {
+        if let predefined = ProjectRole.allCases.first(where: { $0.rawValue == roleKey }) {
+            return predefined.label
+        }
+        return roleKey
+    }
+
+    
     // MARK: - Role options
     private func isOwner(_ member: ProjectMember) -> Bool {
         return member.id == project.ownerMemberId
@@ -167,14 +325,65 @@ struct ProjectMembersView: View {
 
     // MARK: - Mutations
 
-    private func addMember(username: String, roleKey: String) {
+    private func addPendingInvite(username: String, roleKey: String) {
         let trimmed = username.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 
-        let exists = project.members.contains { $0.username.lowercased() == trimmed.lowercased() }
-        guard !exists else { return }
+        // If already a member, do nothing
+        if project.members.contains(where: { $0.username.lowercased() == trimmed.lowercased() }) {
+            return
+        }
 
-        project.members.append(ProjectMember(username: trimmed, roleKey: roleKey))
+        // If already pending/declined, do nothing
+        if pendingInvites.contains(where: { $0.username.lowercased() == trimmed.lowercased() }) { return }
+        if declinedInvites.contains(where: { $0.username.lowercased() == trimmed.lowercased() }) { return }
+
+        pendingInvites.append(ProjectInvite(id: UUID(), username: trimmed, roleKey: roleKey))
+        pendingInvites.sort { $0.username.lowercased() < $1.username.lowercased() }
+    }
+
+    private func cancelInvite(_ invite: ProjectInvite) {
+        Task {
+            guard let token = KeychainService.loadToken() else { return }
+            do {
+                try await membersService.cancelInvite(token: token, inviteId: invite.id)
+                await MainActor.run {
+                    pendingInvites.removeAll { $0.id == invite.id }
+                }
+            } catch {
+                print("cancelInvite failed:", error)
+            }
+        }
+    }
+
+    private func deleteDeclinedInvite(_ invite: ProjectInvite) {
+        Task {
+            guard let token = KeychainService.loadToken() else { return }
+            do {
+                try await membersService.deleteInvite(token: token, inviteId: invite.id)
+                await MainActor.run {
+                    declinedInvites.removeAll { $0.id == invite.id }
+                }
+            } catch {
+                print("deleteDeclinedInvite failed:", error)
+            }
+        }
+    }
+
+    // Call this when an invite is accepted (e.g. after a backend refresh)
+    private func acceptInvite(username: String, roleKey: String) {
+        let trimmed = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+
+        pendingInvites.removeAll { $0.username.lowercased() == trimmed.lowercased() }
+        declinedInvites.removeAll { $0.username.lowercased() == trimmed.lowercased() }
+        
+        // Upsert into members so it appears in filteredMembers immediately.
+        if let idx = project.members.firstIndex(where: { $0.username.lowercased() == trimmed.lowercased() }) {
+            project.members[idx].roleKey = roleKey
+        } else {
+            project.members.append(ProjectMember(username: trimmed, roleKey: roleKey))
+        }
     }
 
     private func updateRole(memberId: UUID, roleKey: String) {

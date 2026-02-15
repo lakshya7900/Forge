@@ -1,4 +1,4 @@
-module roadmate-api
+module forge-api
 
 go 1.24.0
 
