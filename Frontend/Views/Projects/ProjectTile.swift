@@ -36,12 +36,6 @@ struct ProjectTile: View {
                 Menu {
                     Button(project.isPinned ? "Unpin" : "Pin") { onPin?() }
                     Button("Edit") { onEdit?() }
-                    Divider()
-                    Button(role: .destructive) {
-                        onDelete?()
-                    } label: {
-                        Text("Delete")
-                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                         .font(.headline)
@@ -77,6 +71,7 @@ struct ProjectTile: View {
     let demoOwner = ProjectMember(username: "me", roleKey: "frontend")
     
     ProjectTile(project: Project(
+        id: UUID(),
         name: "Demo: Roadmate Planner",
         description: "SeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeedSeed",
         members: [demoOwner],

@@ -71,11 +71,11 @@ struct ManageProjectsView: View {
 #Preview {
     let owner = ProjectMember(username: "preview", roleKey: "fullstack")
     let demo = [
-        Project(name: "A", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
-        Project(name: "B", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
-        Project(name: "C", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
+        Project(id: UUID(), name: "A", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
+        Project(id: UUID(), name: "B", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
+        Project(id: UUID(), name: "C", description: "", members: [owner], tasks: [], ownerMemberId: owner.id),
     ]
 
-    return ManageProjectsView(projects: .constant(demo), onReorder: { _ in })
+    ManageProjectsView(projects: .constant(demo), onReorder: { _ in })
         .frame(width: 560, height: 520)
 }

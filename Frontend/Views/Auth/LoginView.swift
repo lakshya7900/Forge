@@ -32,7 +32,7 @@ struct LoginView: View {
         VStack(spacing: 18) {
 
             VStack(spacing: 6) {
-                Text("Roadmate")
+                Text("Forge")
                     .font(.system(size: 34, weight: .bold, design: .rounded))
             }
             .padding(.bottom, 6)

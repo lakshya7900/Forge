@@ -107,7 +107,12 @@ final class ProjectService {
             throw APIError.badStatus(500, "Invalid owner id")
         }
         
+        guard let project_id = UUID(uuidString: dto.id) else {
+            throw APIError.badStatus(500, "Invalid project id")
+        }
+        
         return Project (
+            id: project_id,
             name: dto.name,
             description: dto.description,
             members: dto.members,

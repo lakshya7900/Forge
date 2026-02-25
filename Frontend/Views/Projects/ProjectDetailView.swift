@@ -135,6 +135,7 @@ private struct ProjectDetailPreviewHost: View {
         let demoOwner = ProjectMember(username: "preview-user", roleKey: "owner")
         
         let demo = Project(
+            id: UUID(),
             name: "Demo: Roadmate Planner",
             description: "Seed project for UI iteration.",
             members: [

@@ -9,7 +9,7 @@
 import Foundation
 
 struct Project: Codable, Identifiable, Equatable {
-    var id: UUID = UUID()
+    var id: UUID
     var name: String
     var description: String
     var members: [ProjectMember]

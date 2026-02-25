@@ -20,6 +20,15 @@ struct ProjectMember: Codable, Identifiable, Equatable {
     }
 }
 
+struct Invitations: Decodable, Identifiable {
+    let id: UUID
+    let project_name: String
+    let inviter_id: UUID
+    let inviter_name: String
+    let role_key: String
+    let created_at: String
+}
+
 enum ProjectRole: String, Codable, CaseIterable, Identifiable {
     case frontend, backend, fullstack, pm, qa
     var id: String { rawValue }

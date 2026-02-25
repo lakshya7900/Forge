@@ -3,7 +3,7 @@ create extension if not exists pgcrypto;
 do $$
 begin
     if not exists (select 1 from pg_type where typname = 'invite_status') then
-        create type invite_status as enum ('pending', 'accepted', 'declined', 'cancelled');
+        create type invite_status as enum ('pending', 'accepted', 'declined');
     else
         alter type invite_status add value if not exists 'declined';
     end if;
@@ -60,7 +60,7 @@ create table if not exists projects_members (
   project_id uuid not null references projects(id) on delete cascade,
   user_id uuid not null references users(id) on delete cascade,
   username text not null,
-  roleKey text not null,
+  role_key text not null,
   created_at timestamptz not null default now()
 );
 

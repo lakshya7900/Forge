@@ -15,7 +15,7 @@ struct AddMemberView: View {
     let projectId: UUID
     let roleOptions: [RoleOption]
     let onRequestAddRole: () -> Void
-    let onInviteSent: (_ username: String, _ roleKey: String) -> Void
+    let onInviteSent: (_ username: String, _ roleKey: String, _ inviteId: UUID) -> Void
     
     @State private var membersService = MembersService()
 
@@ -261,8 +261,11 @@ struct AddMemberView: View {
                 return
             }
             
-            _ = try await membersService.sendInvite(token: token, projectId: projectId, username: trimmedUsername, roleKey: selectedRoleKey)
-            onInviteSent(username, selectedRoleKey)
+            let invite = try await membersService.sendInvite(token: token, projectId: projectId, username: trimmedUsername, roleKey: selectedRoleKey)
+            
+            guard let inviteID = UUID(uuidString: invite.id) else { return }
+            
+            onInviteSent(trimmedUsername, selectedRoleKey, inviteID)
             dismiss()
         } catch let error as MembersError {
             switch error {
@@ -297,8 +300,8 @@ struct AddMemberView: View {
         projectId: UUID(),
         roleOptions: mockRoles,
         onRequestAddRole: {},
-        onInviteSent: { username, roleKey in
-            print("Preview add: ", username, roleKey)
+        onInviteSent: { username, roleKey, inviteId in
+            print("Preview add:", username, roleKey, inviteId)
         }
     )
 }

@@ -40,6 +40,15 @@ type InviteWithUsers struct {
 	CreatedAt       string `json:"created_at"`
 }
 
+type MyInvitations struct {
+	ID          string `json:"id"`
+	ProjectName string `json:"project_name"`
+	InviterID   string `json:"inviter_id"`
+	InviterName string `json:"inviter_name"`
+	RoleKey     string `json:"role_key"`
+	CreatedAt   string `json:"created_at"`
+}
+
 // ProjectInvitesResponse groups invites for the project.
 type ProjectInvitesResponse struct {
 	Pending  []InviteWithUsers `json:"pending"`
@@ -317,7 +326,7 @@ func (h *Handler) ListMyInvites(c *gin.Context) {
 	status := strings.TrimSpace(c.Query("status"))
 	if status == "" {
 		status = "pending"
-	} else if status != "pending" && status != "accepted" && status != "declined" && status != "cancelled"{
+	} else if status != "pending" && status != "accepted" && status != "declined" && status != "cancelled" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid status"})
 		return
 	}
@@ -328,13 +337,14 @@ func (h *Handler) ListMyInvites(c *gin.Context) {
 	rows, err := h.DB.Query(ctx, `
         select
 			pi.id::text,
-			pi.project_id::text,
+			p.name as project_name,
 			pi.inviter_id::text,
-			pi.invitee_id::text,
+			inv.username as inviter_username,
 			pi.role_key,
-			pi.status::text,
 			pi.created_at::text
         from project_invites pi
+		join projects p on p.id = pi.project_id
+		join users inv on inv.id = pi.inviter_id
         where pi.invitee_id::text = $1
 			and pi.status::text = $2
         order by pi.created_at desc
@@ -346,10 +356,10 @@ func (h *Handler) ListMyInvites(c *gin.Context) {
 	}
 	defer rows.Close()
 
-	out := []Invite{}
+	out := []MyInvitations{}
 	for rows.Next() {
-		var r Invite
-		if err := rows.Scan(&r.ID, &r.ProjectID, &r.InviterID, &r.InviteeID, &r.RoleKey, &r.Status, &r.CreatedAt); err != nil {
+		var r MyInvitations
+		if err := rows.Scan(&r.ID, &r.ProjectName, &r.InviterID, &r.InviterName, &r.RoleKey, &r.CreatedAt); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 			return
 		}
@@ -424,13 +434,130 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 		return
 	}
 
-	// mark invite accepted
+	// delete when invite accepted
 	_, err = tx.Exec(ctx, `
-        update project_invites
-        set status = 'accepted', responded_at = now()
+        delete from project_invites
         where id::text = $1
     `, inviteID)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	// 1) Fetch the project details to return
+	var project Project
+	if err := h.DB.QueryRow(ctx, `
+        select
+			p.id::text,
+			p.name,
+			p.description,
+			p.owner_id::text,
+			p.is_pinned,
+			p.sort_index
+		from projects p
+		where p.id::text = $1
+    `, projectID).Scan(&project.ID, &project.Name, &project.Description, &project.OwnerId,  &project.IsPinned, &project.SortIndex); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	// 2) Fetch all members for the project ID
+	memRows, err := h.DB.Query(ctx, `
+		select
+			pm.user_id::text,
+			pm.username,
+			pm.role_key
+		from projects_members pm
+		where pm.project_id::text = $1
+		order by lower(pm.username) asc
+	`, projectID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	defer memRows.Close()
+
+	project.Members = []Member{}
+	for memRows.Next() {
+		var m Member
+		if err := memRows.Scan(&m.ID, &m.Username, &m.RoleKey); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+			return
+		}
+		project.Members = append(project.Members, m)
+	}
+
+	// 3) Fetch all tasks for the project ID
+	taskRows, err := h.DB.Query(ctx, `
+		select
+			t.id::text,
+			t.title,
+			coalesce(t.details, ''),
+			t.status,
+			coalesce(t.assignee_id::text, ''),
+			coalesce(u.username, ''),
+			t.difficulty,
+			t.sort_index,
+			t.created_at
+		from tasks t
+		left join users u on u.id = t.assignee_id
+		where t.project_id::text = $1
+		order by
+			case t.status
+				when 'backlog' then 1
+				when 'inProgress' then 2
+				when 'blocked' then 3
+				when 'done' then 4
+				else 9
+			end,
+			t.sort_index asc,
+			t.created_at asc
+	`, projectID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	defer taskRows.Close()
+
+	project.Tasks = []Task{}
+	for taskRows.Next() {
+		var t Task
+		var assigneeID string
+		var assigneeUsername string
+		var createdAt time.Time
+
+		if err := taskRows.Scan(
+			&t.ID,
+			&t.Title,
+			&t.Details,
+			&t.Status,
+			&assigneeID,
+			&assigneeUsername,
+			&t.Difficulty,
+			&t.SortIndex,
+			&createdAt,
+		); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+			return
+		}
+
+		if assigneeID != "" {
+			t.AssigneeID = &assigneeID
+		}
+		if assigneeUsername != "" {
+			t.AssigneeUsername = &assigneeUsername
+		}
+		t.CreatedAt = createdAt.UTC().Format(time.RFC3339)
+
+		project.Tasks = append(project.Tasks, t)
+	}
+
+	if err := taskRows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	if err := memRows.Err(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
@@ -440,7 +567,7 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"ok": true})
+	c.JSON(http.StatusOK, project)
 }
 
 func (h *Handler) DeclineInvite(c *gin.Context) {
@@ -479,42 +606,6 @@ func (h *Handler) DeclineInvite(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"ok": true})
 }
 
-func (h *Handler) CancelInvite(c *gin.Context) {
-	myID, ok := getAuthUID(c)
-	if !ok {
-		return
-	}
-
-	inviteID := strings.ToLower(strings.TrimSpace(c.Param("inviteId")))
-	if inviteID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing invite id"})
-		return
-	}
-
-	ctx, cancel := contextTimeout(c, 8*time.Second)
-	defer cancel()
-
-	// Only the inviter can cancel, and only while pending.
-	cmd, err := h.DB.Exec(ctx, `
-		update project_invites
-		set status = 'cancelled', responded_at = now()
-		where id::text = $1
-			and inviter_id::text = $2
-			and status = 'pending'
-	`, inviteID, myID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-		return
-	}
-
-	if cmd.RowsAffected() == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "invite not found"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"ok": true})
-}
-
 func (h *Handler) DeleteInvite(c *gin.Context) {
 	myID, ok := getAuthUID(c)
 	if !ok {
@@ -535,7 +626,6 @@ func (h *Handler) DeleteInvite(c *gin.Context) {
 		delete from project_invites
 		where id::text = $1
 			and inviter_id::text = $2
-			and status = 'declined'
 	`, inviteID, myID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})

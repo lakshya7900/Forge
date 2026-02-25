@@ -136,31 +136,6 @@ final class MembersService {
             throw MembersError.serverError
         }
     }
-    
-    func cancelInvite(token: String, inviteId: UUID) async throws {
-        let url = AppConfig.apiBaseURL
-            .appendingPathComponent("/me/invites/\(inviteId.uuidString.lowercased())/cancel")
-
-        var req = URLRequest(url: url)
-        req.httpMethod = "PATCH"
-        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
-        let (_, resp) = try await URLSession.shared.data(for: req)
-        guard let http = resp as? HTTPURLResponse else {
-            throw MembersError.serverError
-        }
-
-        switch http.statusCode {
-        case 200:
-            return
-        case 404:
-            throw MembersError.inviteNotFound
-        case 403:
-            throw MembersError.noAccess
-        default:
-            throw MembersError.serverError
-        }
-    }
 
     func deleteInvite(token: String, inviteId: UUID) async throws {
         let url = AppConfig.apiBaseURL

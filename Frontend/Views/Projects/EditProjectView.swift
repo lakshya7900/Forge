@@ -221,6 +221,7 @@ struct EditProjectView: View {
     let owner = ProjectMember(username: "lakshya", roleKey: "owner")
 
     let project = Project(
+        id: UUID(),
         name: "Roadmate",
         description: "Local AI dev planner for teams.",
         members: [owner],

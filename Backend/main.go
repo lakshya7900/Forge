@@ -100,7 +100,6 @@ func main() {
 	authed.GET("/projects/:projectId/invites", h.ListProjectInvites)
 	authed.POST("/invites/:inviteId/accept", h.AcceptInvite)
 	authed.POST("/invites/:inviteId/decline", h.DeclineInvite)
-	authed.PATCH("/invites/:inviteId/cancel", h.CancelInvite)
 	authed.DELETE("/invites/:inviteId", h.DeleteInvite)
 
 	addr := fmt.Sprintf(":%s", cfg.Port)

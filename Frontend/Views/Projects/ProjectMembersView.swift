@@ -47,7 +47,7 @@ struct ProjectMembersView: View {
                             invites: pendingInvites,
                             actionTitle: "Cancel",
                             actionRole: .destructive,
-                            action: cancelInvite
+                            action: deleteInvite
                         )
                     }
 
@@ -59,7 +59,7 @@ struct ProjectMembersView: View {
                             invites: declinedInvites,
                             actionTitle: "Delete",
                             actionRole: .destructive,
-                            action: deleteDeclinedInvite
+                            action: deleteInvite
                         )
                     }
                     
@@ -86,8 +86,8 @@ struct ProjectMembersView: View {
                 projectId: project.id,
                 roleOptions: roleOptions,
                 onRequestAddRole: { showAddRole = true },
-                onInviteSent: { username, roleKey in
-                    addPendingInvite(username: username, roleKey: roleKey)
+                onInviteSent: { username, roleKey, inviteID in
+                    addPendingInvite(username: username, roleKey: roleKey, inviteID: inviteID)
                 }
             )
         }
@@ -325,7 +325,7 @@ struct ProjectMembersView: View {
 
     // MARK: - Mutations
 
-    private func addPendingInvite(username: String, roleKey: String) {
+    private func addPendingInvite(username: String, roleKey: String, inviteID: UUID) {
         let trimmed = username.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 
@@ -338,34 +338,21 @@ struct ProjectMembersView: View {
         if pendingInvites.contains(where: { $0.username.lowercased() == trimmed.lowercased() }) { return }
         if declinedInvites.contains(where: { $0.username.lowercased() == trimmed.lowercased() }) { return }
 
-        pendingInvites.append(ProjectInvite(id: UUID(), username: trimmed, roleKey: roleKey))
+        pendingInvites.append(ProjectInvite(id: inviteID, username: trimmed, roleKey: roleKey))
         pendingInvites.sort { $0.username.lowercased() < $1.username.lowercased() }
     }
 
-    private func cancelInvite(_ invite: ProjectInvite) {
-        Task {
-            guard let token = KeychainService.loadToken() else { return }
-            do {
-                try await membersService.cancelInvite(token: token, inviteId: invite.id)
-                await MainActor.run {
-                    pendingInvites.removeAll { $0.id == invite.id }
-                }
-            } catch {
-                print("cancelInvite failed:", error)
-            }
-        }
-    }
-
-    private func deleteDeclinedInvite(_ invite: ProjectInvite) {
+    private func deleteInvite(_ invite: ProjectInvite) {
         Task {
             guard let token = KeychainService.loadToken() else { return }
             do {
                 try await membersService.deleteInvite(token: token, inviteId: invite.id)
                 await MainActor.run {
+                    pendingInvites.removeAll { $0.id == invite.id }
                     declinedInvites.removeAll { $0.id == invite.id }
                 }
             } catch {
-                print("deleteDeclinedInvite failed:", error)
+                print("deletInvite failed:", error)
             }
         }
     }

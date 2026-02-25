@@ -224,8 +224,8 @@ struct ProjectBoardView: View {
         // Persist: moved task + updated ordering in both columns
         Task {
             isSyncingTasks = true
-            async let firstSync = syncColumn(oldStatus)
-            async let secondSync = syncColumn(newStatus)
+            async let firstSync: () = syncColumn(oldStatus)
+            async let secondSync: () = syncColumn(newStatus)
             await firstSync
             await secondSync
             isSyncingTasks = false

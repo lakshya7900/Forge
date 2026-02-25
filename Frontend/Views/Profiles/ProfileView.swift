@@ -30,6 +30,10 @@ struct ProfileView: View {
 
     @State private var showEditProfile = false
     
+    @State private var showManageInvitations = false
+    @State private var invitations: [Invitations] = []
+    @State private var invitationsError: String? = nil
+    
     @State private var showAlert = false
 
     var body: some View {
@@ -43,6 +47,10 @@ struct ProfileView: View {
             if !isRunningInPreview {
                 await loadProfile()
             }
+            
+            if profileError == nil {
+                await getInvitations()
+            }
         }
         .modifier(ProfileSheets(
             profile: $profile,
@@ -54,6 +62,8 @@ struct ProfileView: View {
             editingEducation: $editingEducation,
             showEditProjects: $showEditProjects,
             showEditProfile: $showEditProfile,
+            showManageInvitations: $showManageInvitations,
+            invitations: $invitations,
             projectStore: projectStore,
             session: session
         ))
@@ -124,6 +134,10 @@ struct ProfileView: View {
 
         @Binding var showEditProjects: Bool
         @Binding var showEditProfile: Bool
+        
+        @Binding var showManageInvitations: Bool
+        
+        @Binding var invitations: [Invitations]
 
         let projectStore: ProjectStore
         let session: SessionState
@@ -250,11 +264,47 @@ struct ProfileView: View {
                         .frame(minWidth: 600, minHeight: 250)
                     }
                 }
+            
+                .sheet(isPresented: $showManageInvitations) {
+                    ManageInvitesView(
+                        invitations: $invitations,
+                        onAccept: { accepted in
+                            Task {
+                                guard let token = KeychainService.loadToken() else {
+                                    return
+                                }
+                                
+                                do {
+                                    let data = try await profileService.acceptInvitation(token: token, id: accepted.id)
+                                    invitations.removeAll { $0.id == accepted.id }
+                                    projectStore.upsert(data)
+                                } catch {
+                                    return
+                                }
+                            }
+                        },
+                        onDecline: { declined in
+                            Task {
+                                guard let token = KeychainService.loadToken() else {
+                                    return
+                                }
+                                
+                                do {
+                                    _ = try await profileService.declineInvitation(token: token, id: declined.id)
+                                    invitations.removeAll { $0.id == declined.id }
+                                } catch {
+                                    return
+                                }
+                            }
+                        }
+                    )
+                }
+                .frame(minHeight: 400)
         }
     }
 
 
-    // MARK: - Backend load/save
+    // MARK: - Backend
 
     private func loadProfile() async {
         guard let token = KeychainService.loadToken() else {
@@ -292,6 +342,24 @@ struct ProfileView: View {
             // optional: show toast/alert
         }
     }
+    
+    private func getInvitations() async {
+        guard let token = KeychainService.loadToken() else {
+            profileError = "Missing token. Please log in again."
+            return
+        }
+
+        isLoadingProfile = true
+        invitationsError = nil
+        defer { isLoadingProfile = false }
+
+        do {
+            let i = try await profileService.getInvitations(token: token)
+            invitations = i
+        } catch {
+            invitationsError = "Failed to load profile."
+        }
+    }
 
     // MARK: - Hero
 
@@ -322,14 +390,38 @@ struct ProfileView: View {
 
                     Spacer()
 
-                    Button {
-                         showEditProfile = true
-                    } label: {
-                        Image(systemName: "pencil")
-                            .font(.title3)
-                            .foregroundStyle(.secondary)
+                    HStack(spacing: 10) {
+                        Button {
+                             showEditProfile = true
+                        } label: {
+                            Image(systemName: "pencil")
+                                .font(.title3)
+                                .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.plain)
+                        
+                        Button {
+                             showManageInvitations = true
+                        } label: {
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: "bell")
+                                    .font(.title3)
+                                    .foregroundStyle(.secondary)
+
+                                let count = invitations.count
+                                if count > 0 {
+                                    Text(count > 99 ? "99+" : "\(count)")
+                                        .font(.caption2.weight(.semibold))
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(Capsule().fill(Color.red))
+                                        .offset(x: 10, y: -10)
+                                }
+                            }
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
 
                 Divider().opacity(0.6)
@@ -654,7 +746,7 @@ struct ProfileView: View {
     }
     
     // MARK: - Preview helpers
-
+    
     private var isRunningInPreview: Bool {
         ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
@@ -693,6 +785,7 @@ struct ProfileView: View {
 #Preview("ProfileView – Demo") {
     let store = ProjectStore.preview(projects: [
         Project(
+            id: UUID(),
             name: "Roadmate",
             description: "Local AI dev planner for teams.",
             members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
@@ -703,6 +796,7 @@ struct ProfileView: View {
             ownerMemberId: UUID()
         ),
         Project(
+            id: UUID(),
             name: "Side Project",
             description: "Something cool",
             members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
@@ -710,6 +804,7 @@ struct ProfileView: View {
             ownerMemberId: UUID()
         ),
         Project(
+            id: UUID(),
             name: "Another Project",
             description: "",
             members: [ProjectMember(username: "lakshya", roleKey: "fullstack")],
@@ -719,6 +814,11 @@ struct ProfileView: View {
     ])
 
     let session = SessionState()
+    
+    var invitations: [Invitations] = [
+        Invitations(id: UUID(), project_name: "Forge iOS", inviter_id: UUID(), inviter_name: "lakshya", role_key: "editor", created_at: "02.22.2024"),
+        Invitations(id: UUID(), project_name: "Backend API", inviter_id: UUID(), inviter_name: "alex", role_key: "viewer", created_at: "02.22.2024")
+    ]
 
     ProfileView()
         .environment(session)

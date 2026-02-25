@@ -101,6 +101,7 @@ private struct ProjectsListPreviewHost: View {
             let s = ProjectStore(username: "preview-user")
             s.projects = [
                 Project(
+                    id: UUID(),
                     name: "Demo: Roadmate Planner 1",
                     description: "Seed project for UI iteration.",
                     members: [
@@ -119,6 +120,7 @@ private struct ProjectsListPreviewHost: View {
                     ownerMemberId: demoOwner.id
                 ),
                 Project(
+                    id: UUID(),
                     name: "Demo: Roadmate Planner 2",
                     description: "Seed project for UI iteration.",
                     members: [

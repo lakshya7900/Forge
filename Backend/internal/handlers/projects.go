@@ -132,7 +132,7 @@ func (h *Handler) GetProjects(c *gin.Context) {
 			pm.project_id::text,
 			pm.user_id::text,
 			pm.username,
-			pm.rolekey
+			pm.role_key
 		from projects_members pm
 		where pm.project_id::text = any($1)
 		order by lower(pm.username) asc
@@ -318,9 +318,9 @@ func (h *Handler) CreateProject(c *gin.Context) {
 
 	var members Member
 	if err := h.DB.QueryRow(ctx,
-		`insert into projects_members (project_id, user_id, username, roleKey)
+		`insert into projects_members (project_id, user_id, username, role_key)
 		values ($1, $2, $3, $4)
-		returning user_id::text, username, roleKey
+		returning user_id::text, username, role_key
 	`, projectID, ownerID, usr, "frontend").Scan(&members.ID, &members.Username, &members.RoleKey); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
