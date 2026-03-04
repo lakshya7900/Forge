@@ -17,7 +17,9 @@ struct AddMemberView: View {
     let onRequestAddRole: () -> Void
     let onInviteSent: (_ username: String, _ roleKey: String, _ inviteId: UUID) -> Void
     
-    @State private var membersService = MembersService()
+    @State private var invitesService = InvitesService()
+    
+    @State private var showAddRolePopover = false
 
     @State private var username = ""
     @State private var selectedRoleKey: String = ProjectRole.fullstack.rawValue
@@ -114,7 +116,7 @@ struct AddMemberView: View {
                             if newValue == Self.addCustomRoleKey {
                                 // revert to a safe default and open add-role UI
                                 selectedRoleKey = roleOptions.first?.key ?? ProjectRole.fullstack.rawValue
-                                onRequestAddRole()
+                                showAddRolePopover = true
                             }
                         }
                     }
@@ -227,7 +229,7 @@ struct AddMemberView: View {
         defer { isLoading = false }
 
         do {
-            let found = try await membersService.searchUsers(token: token, query: q)
+            let found = try await invitesService.searchUsers(token: token, query: q)
 
             // Only apply if field still matches this query (prevents stale results)
             let current = username.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -261,13 +263,13 @@ struct AddMemberView: View {
                 return
             }
             
-            let invite = try await membersService.sendInvite(token: token, projectId: projectId, username: trimmedUsername, roleKey: selectedRoleKey)
+            let invite = try await invitesService.sendInvite(token: token, projectId: projectId, username: trimmedUsername, roleKey: selectedRoleKey)
             
             guard let inviteID = UUID(uuidString: invite.id) else { return }
             
             onInviteSent(trimmedUsername, selectedRoleKey, inviteID)
             dismiss()
-        } catch let error as MembersError {
+        } catch let error as InvitesError {
             switch error {
             case .memberNotFound:
                 message = "User not found!"

@@ -90,11 +90,10 @@ func main() {
 	authed.PATCH("/projects/:projectId/tasks/:taskId", h.UpdateTask)
 	authed.DELETE("/projects/:projectId/tasks/:taskId", h.DeleteTask)
 
-	// Project Members
-	/// user search
+	/// User Search
 	authed.GET("/users/search", h.SearchUsers)
 
-	/// invites
+	/// Invites
 	authed.POST("/projects/:projectId/invites", h.CreateProjectInvite)
 	authed.GET("/invites", h.ListMyInvites)
 	authed.GET("/projects/:projectId/invites", h.ListProjectInvites)

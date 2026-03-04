@@ -33,6 +33,7 @@ struct ProfileView: View {
     @State private var showManageInvitations = false
     @State private var invitations: [Invitations] = []
     @State private var invitationsError: String? = nil
+    @State private var isLoadingInvitations = false
     
     @State private var showAlert = false
 
@@ -48,9 +49,8 @@ struct ProfileView: View {
                 await loadProfile()
             }
             
-            if profileError == nil {
-                await getInvitations()
-            }
+            // Invitations are independent of profile load
+            await getInvitations()
         }
         .modifier(ProfileSheets(
             profile: $profile,
@@ -64,6 +64,9 @@ struct ProfileView: View {
             showEditProfile: $showEditProfile,
             showManageInvitations: $showManageInvitations,
             invitations: $invitations,
+            invitationsError: $invitationsError,
+            isLoadingInvitations: $isLoadingInvitations,
+            reloadInvitations: { await getInvitations() },
             projectStore: projectStore,
             session: session
         ))
@@ -134,10 +137,14 @@ struct ProfileView: View {
 
         @Binding var showEditProjects: Bool
         @Binding var showEditProfile: Bool
-        
+
         @Binding var showManageInvitations: Bool
-        
+
         @Binding var invitations: [Invitations]
+        @Binding var invitationsError: String?
+        @Binding var isLoadingInvitations: Bool
+
+        let reloadInvitations: () async -> Void
 
         let projectStore: ProjectStore
         let session: SessionState
@@ -268,38 +275,17 @@ struct ProfileView: View {
                 .sheet(isPresented: $showManageInvitations) {
                     ManageInvitesView(
                         invitations: $invitations,
-                        onAccept: { accepted in
-                            Task {
-                                guard let token = KeychainService.loadToken() else {
-                                    return
-                                }
-                                
-                                do {
-                                    let data = try await profileService.acceptInvitation(token: token, id: accepted.id)
-                                    invitations.removeAll { $0.id == accepted.id }
-                                    projectStore.upsert(data)
-                                } catch {
-                                    return
-                                }
-                            }
+                        error: $invitationsError,
+                        isLoadingInvitations: $isLoadingInvitations,
+                        onAccept: { data in
+                            projectStore.upsert(data)
                         },
-                        onDecline: { declined in
-                            Task {
-                                guard let token = KeychainService.loadToken() else {
-                                    return
-                                }
-                                
-                                do {
-                                    _ = try await profileService.declineInvitation(token: token, id: declined.id)
-                                    invitations.removeAll { $0.id == declined.id }
-                                } catch {
-                                    return
-                                }
-                            }
+                        onReload: {
+                            await reloadInvitations()
                         }
                     )
+                    .frame(minWidth: 600, minHeight: 400)
                 }
-                .frame(minHeight: 400)
         }
     }
 
@@ -345,19 +331,19 @@ struct ProfileView: View {
     
     private func getInvitations() async {
         guard let token = KeychainService.loadToken() else {
-            profileError = "Missing token. Please log in again."
+            invitationsError = "Missing token. Please log in again."
             return
         }
 
-        isLoadingProfile = true
+        isLoadingInvitations = true
         invitationsError = nil
-        defer { isLoadingProfile = false }
+        defer { isLoadingInvitations = false }
 
         do {
             let i = try await profileService.getInvitations(token: token)
             invitations = i
         } catch {
-            invitationsError = "Failed to load profile."
+            invitationsError = "Failed to load invitations."
         }
     }
 
@@ -814,11 +800,6 @@ struct ProfileView: View {
     ])
 
     let session = SessionState()
-    
-    var invitations: [Invitations] = [
-        Invitations(id: UUID(), project_name: "Forge iOS", inviter_id: UUID(), inviter_name: "lakshya", role_key: "editor", created_at: "02.22.2024"),
-        Invitations(id: UUID(), project_name: "Backend API", inviter_id: UUID(), inviter_name: "alex", role_key: "viewer", created_at: "02.22.2024")
-    ]
 
     ProfileView()
         .environment(session)

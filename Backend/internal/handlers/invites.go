@@ -446,7 +446,7 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 
 	// 1) Fetch the project details to return
 	var project Project
-	if err := h.DB.QueryRow(ctx, `
+	if err := tx.QueryRow(ctx, `
         select
 			p.id::text,
 			p.name,
@@ -462,7 +462,7 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 	}
 
 	// 2) Fetch all members for the project ID
-	memRows, err := h.DB.Query(ctx, `
+	memRows, err := tx.Query(ctx, `
 		select
 			pm.user_id::text,
 			pm.username,
@@ -488,7 +488,7 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 	}
 
 	// 3) Fetch all tasks for the project ID
-	taskRows, err := h.DB.Query(ctx, `
+	taskRows, err := tx.Query(ctx, `
 		select
 			t.id::text,
 			t.title,

@@ -11,51 +11,89 @@ struct ManageInvitesView: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var invitations: [Invitations]
+    @Binding var error: String?
+    @Binding var isLoadingInvitations: Bool
     
-    let onAccept: (Invitations) -> Void
-    let onDecline: (Invitations) -> Void
+    let onAccept: (Project) -> Void
+    let onReload: () async -> Void
     
     @State private var profileService = ProfileService()
     
+    // UI state
+    @State private var message: String = ""
+    @State private var isLoadingAccept = false
+    @State private var isLoadingDecline = false
+    @State private var shakeTrigger: Int = 0
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            header
+        if isLoadingInvitations {
+            ProgressView()
+        } else if error != nil {
+            VStack(spacing: 10) {
+                Text(error ?? "").foregroundStyle(.red)
+                Button("Retry") { Task { await onReload() } }
+                    .buttonStyle(.bordered)
+            }
+        } else {
+            VStack(alignment: .leading, spacing: 12) {
+                header
 
-            if invitations.isEmpty {
-                ContentUnavailableView("No Invitations", systemImage: "bell", description: Text("You’re all caught up."))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(invitations, id: \.id) { inv in
-                            invitationRow(inv, showActions: true)
+                if invitations.isEmpty {
+                    ContentUnavailableView("No Invitations", systemImage: "bell", description: Text("You’re all caught up."))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            ForEach(invitations, id: \.id) { inv in
+                                invitationRow(inv, showActions: true)
+                            }
                         }
+                        .padding(.vertical, 2)
                     }
-                    .padding(.vertical, 2)
                 }
             }
+            .padding(16)
         }
-        .padding(16)
     }
 
     private var header: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Invitations")
-                    .font(.title2.weight(.semibold))
+        VStack(alignment: .leading) {
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Invitations")
+                        .font(.title2.weight(.semibold))
 
-                Text("Accept or decline project invites")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.top, -2)
+                    Text("Accept or decline project invites")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .padding(.top, -2)
+                }
+
+                Spacer()
+
+                Button {
+                    Task { await onReload() }
+                } label: {
+                    if isLoadingInvitations {
+                        ProgressView().controlSize(.small)
+                    } else {
+                        Label("Reload", systemImage: "arrow.clockwise")
+                    }
+                }
+                .disabled(isLoadingInvitations)
+                
+                Button("Done") { dismiss() }
+                    .keyboardShortcut(.defaultAction)
             }
-
-            Spacer()
-
-            Button("Done") { dismiss() }
-                .keyboardShortcut(.defaultAction)
+            .padding(12)
+            
+            if !message.isEmpty {
+                Label(message, systemImage: "exclamationmark.triangle.fill")
+                .foregroundStyle(.red)
+                .padding(.bottom)
+                .padding(.leading)
+            }
         }
-        .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .fill(.ultraThinMaterial)
@@ -64,6 +102,7 @@ struct ManageInvitesView: View {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .strokeBorder(.separator.opacity(0.6))
         )
+        .animation(.snappy, value: message.isEmpty)
     }
     
     @ViewBuilder
@@ -92,20 +131,102 @@ struct ManageInvitesView: View {
 
             if showActions {
                 HStack(spacing: 8) {
-                    Button("Decline") {
-                        onDecline(inv)
-                    }
+                    Button(action: {
+                        Task { await declineInvitation(inv) }
+                    }, label: {
+                        HStack(spacing: 10) {
+                            if isLoadingDecline {
+                                ProgressView()
+                                    .foregroundStyle(.red)
+                                    .controlSize(.small)
+                            }
+                            Text("Decline")
+                        }
+                    })
+                    .disabled(isLoadingDecline)
+                    .shake(shakeTrigger)
+                    .animation(.snappy, value: isLoadingDecline)
                     .buttonStyle(.bordered)
                     .tint(.red)
 
-                    Button("Accept") {
-                        onAccept(inv)
-                    }
+                    Button(action: {
+                        Task { await acceptInvitation(inv) }
+                    }, label: {
+                        HStack(spacing: 10) {
+                            if isLoadingAccept {
+                                ProgressView().controlSize(.small)
+                            }
+                            Text("Accept")
+                        }
+                    })
+                    .keyboardShortcut(.defaultAction)
+                    .disabled(isLoadingAccept)
+                    .shake(shakeTrigger)
+                    .animation(.snappy, value: isLoadingAccept)
                     .buttonStyle(.borderedProminent)
                 }
             }
         }
         .padding(.vertical, 6)
+    }
+
+    private func acceptInvitation( _ invitation: Invitations) async {
+        isLoadingAccept = true
+        message = ""
+        
+        defer { isLoadingAccept = false }
+        
+        guard let token = KeychainService.loadToken() else {
+            message = "Missing token. Please log in again."
+            shakeTrigger += 1
+            return
+        }
+        
+        do {
+            let data = try await profileService.acceptInvitation(token: token, id: invitation.id)
+            invitations.removeAll { $0.id == invitation.id }
+            onAccept(data)
+        } catch let error as InvitationsError {
+            switch error {
+            case .invitationsNotFound:
+                message = "Invitation not found."
+            case .serverError:
+                message = "Server error. Please try again."
+            }
+            shakeTrigger += 1
+        } catch {
+            message = "Missing token. Please log in again."
+            shakeTrigger += 1
+        }
+    }
+    
+    private func declineInvitation( _ invitation: Invitations) async {
+        isLoadingDecline = true
+        message = ""
+        
+        defer { isLoadingDecline = false }
+        
+        guard let token = KeychainService.loadToken() else {
+            message = "Missing token. Please log in again."
+            shakeTrigger += 1
+            return
+        }
+        
+        do {
+            try await profileService.declineInvitation(token: token, id: invitation.id)
+            invitations.removeAll { $0.id == invitation.id }
+        } catch let error as InvitationsError {
+            switch error {
+            case .invitationsNotFound:
+                message = "Invitation not found."
+            case .serverError:
+                message = "Server error. Please try again."
+            }
+            shakeTrigger += 1
+        } catch {
+            message = "Missing token. Please log in again."
+            shakeTrigger += 1
+        }
     }
 }
 
@@ -116,15 +237,20 @@ struct ManageInvitesView: View {
             Invitations(id: UUID(), project_name: "Backend API", inviter_id: UUID(), inviter_name: "alex", role_key: "viewer", created_at: "02.22.2024")
         ]
         
+        @State var isLoadingInvitations = false
+        @State var error: String? = nil
+        
         var body: some View {
             ManageInvitesView(
                 invitations: $invitations,
+                error: $error,
+                isLoadingInvitations: $isLoadingInvitations,
                 onAccept: { _ in },
-                onDecline: { _ in }
+                onReload: {}
             )
         }
     }
     
     return PreviewContainer()
-        .frame(minHeight: 400)
+        .frame(minWidth: 600, minHeight: 400)
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct ProjectMembersView: View {
     @Binding var project: Project
     
-    @State private var membersService = MembersService()
+    @State private var invitesService = InvitesService()
 
     @State private var showAddMember = false
     @State private var deletingMemberId: UUID?
@@ -218,9 +218,9 @@ struct ProjectMembersView: View {
         }
 
         do {
-            // Expected to be implemented in MembersService:
+            // Expected to be implemented in InvitesService:
             // getProjectInvites(token:projectId:) -> ProjectInvitesResponse
-            let resp = try await membersService.getProjectInvites(token: token, projectId: project.id)
+            let resp = try await invitesService.getProjectInvites(token: token, projectId: project.id)
 
             // Map backend invites into local UI models.
             let pending: [ProjectInvite] = resp.pending.compactMap { inv in
@@ -346,7 +346,7 @@ struct ProjectMembersView: View {
         Task {
             guard let token = KeychainService.loadToken() else { return }
             do {
-                try await membersService.deleteInvite(token: token, inviteId: invite.id)
+                try await invitesService.deleteInvite(token: token, inviteId: invite.id)
                 await MainActor.run {
                     pendingInvites.removeAll { $0.id == invite.id }
                     declinedInvites.removeAll { $0.id == invite.id }

@@ -1,5 +1,5 @@
 //
-//  MembersService.swift
+//  InvitesService.swift
 //  Forge
 //
 //  Created by Lakshya Agarwal on 2/12/26.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MembersError: Error {
+enum InvitesError: Error {
     case memberNotFound
     case inviteAlreadyExists
     case noAccess
@@ -52,7 +52,7 @@ struct CreateInviteRequest: Encodable {
     let role_key: String
 }
 
-final class MembersService {
+final class InvitesService {
     func searchUsers(token: String, query: String) async throws -> [UserMini] {
         let q = query.trimmingCharacters(in: .whitespacesAndNewlines)
         if q.count < 2 { return [] }
@@ -91,7 +91,7 @@ final class MembersService {
 
         let (data, resp) = try await URLSession.shared.data(for: req)
         guard let http = resp as? HTTPURLResponse else {
-            throw MembersError.serverError
+            throw InvitesError.serverError
         }
         
         switch http.statusCode {
@@ -99,16 +99,16 @@ final class MembersService {
             return try JSONDecoder().decode(Invite.self, from: data)
             
         case 404:
-            throw MembersError.memberNotFound
+            throw InvitesError.memberNotFound
             
         case 409:
-            throw MembersError.inviteAlreadyExists
+            throw InvitesError.inviteAlreadyExists
             
         case 403:
-            throw MembersError.noAccess
+            throw InvitesError.noAccess
             
         default:
-            throw MembersError.serverError
+            throw InvitesError.serverError
         }
     }
     
@@ -122,7 +122,7 @@ final class MembersService {
 
         let (data, resp) = try await URLSession.shared.data(for: req)
         guard let http = resp as? HTTPURLResponse else {
-            throw MembersError.serverError
+            throw InvitesError.serverError
         }
         
         switch http.statusCode {
@@ -130,10 +130,10 @@ final class MembersService {
             return try JSONDecoder().decode(ProjectInvitesResponse.self, from: data)
             
         case 403:
-            throw MembersError.noAccess
+            throw InvitesError.noAccess
             
         default:
-            throw MembersError.serverError
+            throw InvitesError.serverError
         }
     }
 
@@ -147,18 +147,18 @@ final class MembersService {
 
         let (_, resp) = try await URLSession.shared.data(for: req)
         guard let http = resp as? HTTPURLResponse else {
-            throw MembersError.serverError
+            throw InvitesError.serverError
         }
 
         switch http.statusCode {
         case 200:
             return
         case 404:
-            throw MembersError.inviteNotFound
+            throw InvitesError.inviteNotFound
         case 403:
-            throw MembersError.noAccess
+            throw InvitesError.noAccess
         default:
-            throw MembersError.serverError
+            throw InvitesError.serverError
         }
     }
 }
