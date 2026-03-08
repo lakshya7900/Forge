@@ -8,7 +8,7 @@
 import Foundation
 
 enum InvitesError: Error {
-    case memberNotFound
+    case userNotFound
     case inviteAlreadyExists
     case noAccess
     case inviteNotFound
@@ -99,7 +99,7 @@ final class InvitesService {
             return try JSONDecoder().decode(Invite.self, from: data)
             
         case 404:
-            throw InvitesError.memberNotFound
+            throw InvitesError.userNotFound
             
         case 409:
             throw InvitesError.inviteAlreadyExists

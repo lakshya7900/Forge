@@ -12,6 +12,7 @@ struct ProjectResponse: Decodable {
     let name: String
     let description: String
     let owner_id: String
+    let custom_roles: [String]
     let members: [ProjectMember]
     let tasks: [TaskDTO]
     let is_pinned: Bool
@@ -37,6 +38,10 @@ struct EditProjectRequest: Encodable {
 
 struct ReorderProjectRequest: Encodable {
     let project_ids: [String]
+}
+
+struct AddCustomRolesRequest: Encodable {
+    let custom_roles: [String]
 }
 
 final class ProjectService {
@@ -73,6 +78,7 @@ final class ProjectService {
                 tasks: dto.tasks.map{ TaskItem(from: $0) },
                 isPinned: dto.is_pinned,
                 sortIndex: dto.sort_index,
+                customRoles: dto.custom_roles,
                 ownerMemberId: ownerID
             )
         }
@@ -188,6 +194,25 @@ final class ProjectService {
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body = ReorderProjectRequest(project_ids: orderedIds.map { $0.uuidString.lowercased() })
+        req.httpBody = try JSONEncoder().encode(body)
+        
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        let code = (resp as? HTTPURLResponse)?.statusCode ?? -1
+        
+        guard code == 200 else {
+            throw APIError.badStatus(code, String(data: data, encoding: .utf8) ?? "")
+        }
+    }
+    
+    func addCustomRoles(token: String, id: UUID, customRoles: [String]) async throws {
+        let url = AppConfig.apiBaseURL.appendingPathComponent("/me/projects/\(id.uuidString.lowercased())/customRoles")
+        
+        var req = URLRequest(url: url)
+        req.httpMethod = "PUT"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body = AddCustomRolesRequest(custom_roles: customRoles)
         req.httpBody = try JSONEncoder().encode(body)
         
         let (data, resp) = try await URLSession.shared.data(for: req)

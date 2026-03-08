@@ -11,6 +11,7 @@ struct ProjectMembersView: View {
     @Binding var project: Project
     
     @State private var invitesService = InvitesService()
+    @State private var projectMemebersService = ProjectMembersService()
 
     @State private var showAddMember = false
     @State private var deletingMemberId: UUID?
@@ -19,7 +20,6 @@ struct ProjectMembersView: View {
     @State private var selectedRoleFilter: String = "All" // "All" or roleKey
 
     @State private var showAddRole = false
-    @State private var newRoleName = ""
     
     // Invitations (local UI state for now)
     @State private var pendingInvites: [ProjectInvite] = []
@@ -68,7 +68,7 @@ struct ProjectMembersView: View {
                             member: member,
                             roleOptions: roleOptions,
                             isOwner: isOwner(member),
-                            onChangeRole: { newRoleKey in updateRole(memberId: member.id, roleKey: newRoleKey) },
+                            onChangeRole: { newRoleKey in Task { await updateRole(memberId: member.id, roleKey: newRoleKey) } },
                             onRequestAddRole: { showAddRole = true },
                             onDelete: isOwner(member) ? nil : { deletingMemberId = member.id }
                         )
@@ -91,6 +91,10 @@ struct ProjectMembersView: View {
                 }
             )
         }
+        .sheet(isPresented: $showAddRole, content: {
+            AddCustomRolesView(project: $project)
+                .padding()
+        })
         .confirmationDialog(
             "Remove member?",
             isPresented: Binding(
@@ -99,19 +103,19 @@ struct ProjectMembersView: View {
             )
         ) {
             Button("Remove", role: .destructive) {
-                if let id = deletingMemberId { removeMember(id) }
+                if let id = deletingMemberId { Task { await removeMember(id) } }
                 deletingMemberId = nil
             }
             Button("Cancel", role: .cancel) { deletingMemberId = nil }
         }
-        .alert("Add Custom Role", isPresented: $showAddRole) {
-            TextField("Role name (e.g., Designer, DevOps)", text: $newRoleName)
-
-            Button("Add") { addCustomRole() }
-            Button("Cancel", role: .cancel) { newRoleName = "" }
-        } message: {
-            Text("This role will appear in the role dropdown for all team members in this project.")
-        }
+//        .alert("Add Custom Role", isPresented: $showAddRole) {
+//            TextField("Role name (e.g., Designer, DevOps)", text: $newRoleName)
+//
+//            Button("Add") { addCustomRole() }
+//            Button("Cancel", role: .cancel) { newRoleName = "" }
+//        } message: {
+//            Text("This role will appear in the role dropdown for all team members in this project.")
+//        }
     }
 
     // MARK: - UI
@@ -373,28 +377,70 @@ struct ProjectMembersView: View {
         }
     }
 
-    private func updateRole(memberId: UUID, roleKey: String) {
-        guard let idx = project.members.firstIndex(where: { $0.id == memberId }) else { return }
-        project.members[idx].roleKey = roleKey
+    private func updateRole(memberId: UUID, roleKey: String) async {
+        guard let token = KeychainService.loadToken() else {
+            print("Token error")
+            return
+        }
+        
+        do {
+            let _ = try await projectMemebersService.updateMemberRole(token: token, projectId: project.id, memberId: memberId, roleKey: roleKey)
+            guard let idx = project.members.firstIndex(where: { $0.id == memberId }) else { return }
+            project.members[idx].roleKey = roleKey
+        } catch let error as ProjectMembersError {
+            switch error {
+            case .memberNotFound:
+                print("Project Memeber not found")
+            case .serverError:
+                print("Server error")
+            case .notOwner:
+                print("Project Member not owner")
+            }
+        } catch {
+            print("Server error")
+        }
     }
 
-    private func removeMember(_ id: UUID) {
-        if id == project.ownerMemberId { return }
-        project.members.removeAll { $0.id == id }
+    private func removeMember(_ id: UUID) async {
+        guard let token = KeychainService.loadToken() else {
+            print("Token error")
+            return
+        }
+        
+        if id == project.ownerMemberId {
+            print("Cannot remove owner")
+            return
+        }
+        
+        do {
+            let _ = try await projectMemebersService.deleteMember(token: token, projectId: project.id, memberId: id)
+            project.members.removeAll { $0.id == id }
+        } catch let error as ProjectMembersError {
+            switch error {
+            case .memberNotFound:
+                print("Project Memeber not found")
+            case .serverError:
+                print("Server error")
+            case .notOwner:
+                print("Project Member not owner")
+            }
+        } catch {
+            print("Server error")
+        }
     }
 
-    private func addCustomRole() {
-        let role = newRoleName.trimmingCharacters(in: .whitespacesAndNewlines)
-        newRoleName = ""
-        guard !role.isEmpty else { return }
-
-        // Prevent duplicates (case-insensitive) and collisions with predefined keys
-        let lower = role.lowercased()
-
-        if ProjectRole.allCases.map({ $0.rawValue.lowercased() }).contains(lower) { return }
-        if project.customRoles.map({ $0.lowercased() }).contains(lower) { return }
-
-        project.customRoles.append(role)
-        project.customRoles.sort { $0.lowercased() < $1.lowercased() }
-    }
+//    private func addCustomRole() {
+//        let role = newRoleName.trimmingCharacters(in: .whitespacesAndNewlines)
+//        newRoleName = ""
+//        guard !role.isEmpty else { return }
+//
+//        // Prevent duplicates (case-insensitive) and collisions with predefined keys
+//        let lower = role.lowercased()
+//
+//        if ProjectRole.allCases.map({ $0.rawValue.lowercased() }).contains(lower) { return }
+//        if project.customRoles.map({ $0.lowercased() }).contains(lower) { return }
+//
+//        project.customRoles.append(role)
+//        project.customRoles.sort { $0.lowercased() < $1.lowercased() }
+//    }
 }

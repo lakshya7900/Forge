@@ -50,6 +50,7 @@ create table if not exists projects (
   name text not null,
   description text not null default '',
   owner_id uuid not null references users(id) on delete cascade,
+  custom_roles text[] not null DEFAULT '{}',
   is_pinned boolean default false,
   sort_index int not null default 0,
   created_at timestamptz not null default now()

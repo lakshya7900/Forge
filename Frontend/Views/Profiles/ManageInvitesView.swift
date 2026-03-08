@@ -21,9 +21,10 @@ struct ManageInvitesView: View {
     
     // UI state
     @State private var message: String = ""
-    @State private var isLoadingAccept = false
-    @State private var isLoadingDecline = false
     @State private var shakeTrigger: Int = 0
+    
+    @State private var loadingAcceptIds: Set<UUID> = []
+    @State private var loadingDeclineIds: Set<UUID> = []
     
     var body: some View {
         if isLoadingInvitations {
@@ -44,7 +45,7 @@ struct ManageInvitesView: View {
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 8) {
-                            ForEach(invitations, id: \.id) { inv in
+                            ForEach(invitations) { inv in
                                 invitationRow(inv, showActions: true)
                             }
                         }
@@ -70,17 +71,14 @@ struct ManageInvitesView: View {
                 }
 
                 Spacer()
-
+                
                 Button {
                     Task { await onReload() }
                 } label: {
-                    if isLoadingInvitations {
-                        ProgressView().controlSize(.small)
-                    } else {
-                        Label("Reload", systemImage: "arrow.clockwise")
-                    }
+                    Label("Reload", systemImage: "arrow.clockwise")
                 }
                 .disabled(isLoadingInvitations)
+
                 
                 Button("Done") { dismiss() }
                     .keyboardShortcut(.defaultAction)
@@ -135,7 +133,7 @@ struct ManageInvitesView: View {
                         Task { await declineInvitation(inv) }
                     }, label: {
                         HStack(spacing: 10) {
-                            if isLoadingDecline {
+                            if loadingDeclineIds.contains(inv.id) {
                                 ProgressView()
                                     .foregroundStyle(.red)
                                     .controlSize(.small)
@@ -143,9 +141,9 @@ struct ManageInvitesView: View {
                             Text("Decline")
                         }
                     })
-                    .disabled(isLoadingDecline)
+                    .disabled(loadingDeclineIds.contains(inv.id))
                     .shake(shakeTrigger)
-                    .animation(.snappy, value: isLoadingDecline)
+                    .animation(.snappy, value: loadingDeclineIds.contains(inv.id))
                     .buttonStyle(.bordered)
                     .tint(.red)
 
@@ -153,16 +151,15 @@ struct ManageInvitesView: View {
                         Task { await acceptInvitation(inv) }
                     }, label: {
                         HStack(spacing: 10) {
-                            if isLoadingAccept {
+                            if loadingAcceptIds.contains(inv.id) {
                                 ProgressView().controlSize(.small)
                             }
                             Text("Accept")
                         }
                     })
-                    .keyboardShortcut(.defaultAction)
-                    .disabled(isLoadingAccept)
+                    .disabled(loadingAcceptIds.contains(inv.id))
                     .shake(shakeTrigger)
-                    .animation(.snappy, value: isLoadingAccept)
+                    .animation(.snappy, value: loadingAcceptIds.contains(inv.id))
                     .buttonStyle(.borderedProminent)
                 }
             }
@@ -170,18 +167,18 @@ struct ManageInvitesView: View {
         .padding(.vertical, 6)
     }
 
-    private func acceptInvitation( _ invitation: Invitations) async {
-        isLoadingAccept = true
+    private func acceptInvitation(_ invitation: Invitations) async {
+        loadingAcceptIds.insert(invitation.id)
         message = ""
-        
-        defer { isLoadingAccept = false }
-        
+
+        defer { loadingAcceptIds.remove(invitation.id) }
+
         guard let token = KeychainService.loadToken() else {
             message = "Missing token. Please log in again."
             shakeTrigger += 1
             return
         }
-        
+
         do {
             let data = try await profileService.acceptInvitation(token: token, id: invitation.id)
             invitations.removeAll { $0.id == invitation.id }
@@ -195,23 +192,23 @@ struct ManageInvitesView: View {
             }
             shakeTrigger += 1
         } catch {
-            message = "Missing token. Please log in again."
+            message = "An unexpected error occurred. Please try again."
             shakeTrigger += 1
         }
     }
-    
-    private func declineInvitation( _ invitation: Invitations) async {
-        isLoadingDecline = true
+
+    private func declineInvitation(_ invitation: Invitations) async {
+        loadingDeclineIds.insert(invitation.id)
         message = ""
-        
-        defer { isLoadingDecline = false }
-        
+
+        defer { loadingDeclineIds.remove(invitation.id) }
+
         guard let token = KeychainService.loadToken() else {
             message = "Missing token. Please log in again."
             shakeTrigger += 1
             return
         }
-        
+
         do {
             try await profileService.declineInvitation(token: token, id: invitation.id)
             invitations.removeAll { $0.id == invitation.id }
@@ -224,7 +221,7 @@ struct ManageInvitesView: View {
             }
             shakeTrigger += 1
         } catch {
-            message = "Missing token. Please log in again."
+            message = "An unexpected error occurred. Please try again."
             shakeTrigger += 1
         }
     }

@@ -12,42 +12,47 @@ import (
 
 // ========= Project DTOs (responses) =========
 type Member struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
-	RoleKey  string `json:"roleKey"`
+	ID       string 	`json:"id"`
+	Username string 	`json:"username"`
+	RoleKey  string 	`json:"roleKey"`
 }
 
 type Project struct {
-	ID          string   `json:"id"`
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	OwnerId     string   `json:"owner_id"`
-	Members     []Member `json:"members"`
-	Tasks       []Task   `json:"tasks"`
-	IsPinned    bool     `json:"is_pinned"`
-	SortIndex   int      `json:"sort_index"`
+	ID          string   	`json:"id"`
+	Name        string   	`json:"name"`
+	Description string   	`json:"description"`
+	OwnerId     string   	`json:"owner_id"`
+	CustomRoles []string	`json:"custom_roles"`
+	Members     []Member 	`json:"members"`
+	Tasks       []Task   	`json:"tasks"`
+	IsPinned    bool     	`json:"is_pinned"`
+	SortIndex   int      	`json:"sort_index"`
 }
 
 type EditProjectDetail struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	ID          string 	`json:"id"`
+	Name        string 	`json:"name"`
+	Description string 	`json:"description"`
 }
 
 // ========= Requests =========
 type createProjectReq struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Name        string 	`json:"name"`
+	Description string 	`json:"description"`
 }
 
 type editProjectDetailsReq struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	ID          string 	`json:"id"`
+	Name        string 	`json:"name"`
+	Description string 	`json:"description"`
 }
 
 type reorderProjectsReq struct {
 	ProjectIDs []string `json:"project_ids"`
+}
+
+type addCustomRoles struct {
+	Roles []string `json:"custom_roles"`
 }
 
 // Helper function to extract and validate user ID from context
@@ -87,6 +92,7 @@ func (h *Handler) GetProjects(c *gin.Context) {
 			p.name,
 			p.description,
 			p.owner_id::text,
+			p.custom_roles,
 			p.is_pinned,
 			p.sort_index
 		from projects_members pm
@@ -105,7 +111,7 @@ func (h *Handler) GetProjects(c *gin.Context) {
 
 	for rows.Next() {
 		var p Project
-		if err := rows.Scan(&p.ID, &p.Name, &p.Description, &p.OwnerId, &p.IsPinned, &p.SortIndex); err != nil {
+		if err := rows.Scan(&p.ID, &p.Name, &p.Description, &p.OwnerId, &p.CustomRoles, &p.IsPinned, &p.SortIndex); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 			return
 		}
@@ -441,13 +447,9 @@ func (h *Handler) DeleteProject(c *gin.Context) {
 }
 
 func (h *Handler) PinProject(c *gin.Context) {
-	ownerIDAny, ok := c.Get("uid")
+	ownerID, ok := getAuthUID(c)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing auth"})
-	}
-	ownerID, ok := ownerIDAny.(string)
-	if !ok || ownerID == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "bad auth"})
+		return
 	}
 
 	id := strings.TrimSpace(c.Param("projectId"))
@@ -572,6 +574,72 @@ func (h *Handler) ReorderProjects(c *gin.Context) {
 	}
 
 	if int(cmd.RowsAffected()) != len(ids) {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"ok": true})
+}
+
+func (h *Handler) AddCustomRoles(c *gin.Context) {
+	_, ok := getAuthUID(c)
+	if !ok {
+		return
+	}
+
+	id := strings.TrimSpace(c.Param("id"))
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing id"})
+		return
+	}
+
+	ctx, cancel := contextTimeout(c, 8*time.Second)
+	defer cancel()
+
+	var req addCustomRoles
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bad json"})
+		return
+	}
+
+	if len(req.Roles) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing custom roles"})
+	}
+
+	tx, err := h.DB.Begin(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+	defer tx.Rollback(ctx)
+
+	var existingCustomRoles []string
+	if err := tx.QueryRow(ctx, `
+		select custom_roles 
+		from projects
+			where id = $1::uuid
+	`, id).Scan(&existingCustomRoles); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	var combinedCustomRoles = append(existingCustomRoles, req.Roles...)
+	cmd, err := tx.Exec(ctx, `
+		update projects
+		set custom_roles = $1
+		where id = $2::uuid
+	`, combinedCustomRoles, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
+	}
+
+	if int(cmd.RowsAffected()) == 0 {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}

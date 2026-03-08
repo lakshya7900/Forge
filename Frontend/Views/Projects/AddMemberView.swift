@@ -19,8 +19,6 @@ struct AddMemberView: View {
     
     @State private var invitesService = InvitesService()
     
-    @State private var showAddRolePopover = false
-
     @State private var username = ""
     @State private var selectedRoleKey: String = ProjectRole.fullstack.rawValue
     
@@ -98,8 +96,8 @@ struct AddMemberView: View {
                             ForEach(roleOptions) { opt in
                                 Text(opt.label).tag(opt.key)
                             }
-                            Divider()
-                            Text("Add Custom Role…").tag(Self.addCustomRoleKey)
+//                            Divider()
+//                            Text("Add Custom Role…").tag(Self.addCustomRoleKey)
                         } label: {
                             EmptyView()
                         }
@@ -114,9 +112,8 @@ struct AddMemberView: View {
                         )
                         .onChange(of: selectedRoleKey) { _, newValue in
                             if newValue == Self.addCustomRoleKey {
-                                // revert to a safe default and open add-role UI
                                 selectedRoleKey = roleOptions.first?.key ?? ProjectRole.fullstack.rawValue
-                                showAddRolePopover = true
+                                onRequestAddRole()
                             }
                         }
                     }
@@ -265,13 +262,18 @@ struct AddMemberView: View {
             
             let invite = try await invitesService.sendInvite(token: token, projectId: projectId, username: trimmedUsername, roleKey: selectedRoleKey)
             
-            guard let inviteID = UUID(uuidString: invite.id) else { return }
+            guard let inviteID = UUID(uuidString: invite.id) else {
+                message = "Invalid invite ID. Please try again."
+                shakeTrigger += 1
+                dismiss()
+                return
+            }
             
             onInviteSent(trimmedUsername, selectedRoleKey, inviteID)
             dismiss()
         } catch let error as InvitesError {
             switch error {
-            case .memberNotFound:
+            case .userNotFound:
                 message = "User not found!"
             case .inviteAlreadyExists:
                 message = "Member already invited."

@@ -11,7 +11,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// ========= Member DTOs (responses) =========
+// ========= Invites DTOs (responses) =========
 type UserMini struct {
 	ID       string `json:"id"`
 	Username string `json:"username"`
@@ -456,7 +456,7 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 			p.sort_index
 		from projects p
 		where p.id::text = $1
-    `, projectID).Scan(&project.ID, &project.Name, &project.Description, &project.OwnerId,  &project.IsPinned, &project.SortIndex); err != nil {
+    `, projectID).Scan(&project.ID, &project.Name, &project.Description, &project.OwnerId, &project.IsPinned, &project.SortIndex); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
@@ -485,6 +485,11 @@ func (h *Handler) AcceptInvite(c *gin.Context) {
 			return
 		}
 		project.Members = append(project.Members, m)
+	}
+
+	if err := memRows.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+		return
 	}
 
 	// 3) Fetch all tasks for the project ID

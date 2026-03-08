@@ -69,12 +69,12 @@ func main() {
 
 	// Skills APIs
 	authed.POST("/skills", h.AddSkill)
-	authed.PUT("/skills", h.UpdateSkill)
+	authed.PUT("/skills", h.UpdateSkill) // Fix
 	authed.DELETE("/skills/:id", h.DeleteSkill)
 
 	// Educations APIs
 	authed.POST("/educations", h.AddEducation)
-	authed.PUT("/educations", h.UpdateEducation)
+	authed.PUT("/educations", h.UpdateEducation) // Fix
 	authed.DELETE("/educations/:id", h.DeleteEducation)
 
 	// Projects
@@ -84,22 +84,27 @@ func main() {
 	authed.DELETE("/projects/:projectId", h.DeleteProject)
 	authed.PATCH("/projects/:projectId/:pin", h.PinProject)
 	authed.PATCH("/projects/reorder", h.ReorderProjects)
+	authed.PUT("/projects/:id/customRoles", h.AddCustomRoles)
 
 	// Project Tasks
 	authed.POST("/projects/:projectId/tasks", h.AddTask)
 	authed.PATCH("/projects/:projectId/tasks/:taskId", h.UpdateTask)
 	authed.DELETE("/projects/:projectId/tasks/:taskId", h.DeleteTask)
 
-	/// User Search
+	// User Search
 	authed.GET("/users/search", h.SearchUsers)
 
-	/// Invites
+	// Invites
 	authed.POST("/projects/:projectId/invites", h.CreateProjectInvite)
 	authed.GET("/invites", h.ListMyInvites)
 	authed.GET("/projects/:projectId/invites", h.ListProjectInvites)
 	authed.POST("/invites/:inviteId/accept", h.AcceptInvite)
 	authed.POST("/invites/:inviteId/decline", h.DeclineInvite)
 	authed.DELETE("/invites/:inviteId", h.DeleteInvite)
+
+	// Project Members
+	authed.PATCH("/projects/:projectId/members/:memberId", h.UpdateMemberRole)
+	authed.DELETE("/projects/:projectId/members/:memberId", h.DeleteMember)
 
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	fmt.Printf("%s Server running on http://localhost:%s\n", time.Now().Format("2006/01/02 15:04:05"), cfg.Port)

@@ -46,11 +46,16 @@ struct ProfileView: View {
         .onAppear { seedPreviewIfNeeded() }
         .task {
             if !isRunningInPreview {
-                await loadProfile()
+                async let profileTask = loadProfile()
+                async let invitationsTask = getInvitations()
+
+                do {
+                    try await profileTask
+                    try await invitationsTask
+                } catch {
+                    // Handle errors if needed
+                }
             }
-            
-            // Invitations are independent of profile load
-            await getInvitations()
         }
         .modifier(ProfileSheets(
             profile: $profile,
