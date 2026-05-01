@@ -1,0 +1,4722 @@
+[
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It pair programming matchmaker based on timezone and tech stack."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "One-time purchase, no subscription."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "Just the core flow \u2014 input \u2192 AI processes \u2192 output. No bells and whistles."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Clean web UI \u2014 nothing fancy, just works."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that pair programming matchmaker based on timezone and tech stack \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Slack bot"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your slack bot supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Summarizes long threads into bullet points on demand."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Small business owners who aren't very technical."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a slack bot that summarizes long threads into bullet points on demand \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "VS Code plugin"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your vs code plugin supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Live collaboration with voice annotations on code."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Combination \u2014 some user-provided, some fetched in real time."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "One-time purchase, no subscription."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's way simpler \u2014 most alternatives are bloated with features nobody uses."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Clean web UI \u2014 nothing fancy, just works."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a vs code plugin that live collaboration with voice annotations on code \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically accountability partner matching for side project builders."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "The AI understands nuance, not just keywords."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "User inputs it \u2014 mostly plain text preferences."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "Just the core flow \u2014 input \u2192 AI processes \u2192 output. No bells and whistles."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that accountability partner matching for side project builders \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is AI tutor that teaches programming through Socratic questioning."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that AI tutor that teaches programming through Socratic questioning \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically language learning through real conversations with AI personas."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Open source, maybe sponsorships later."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A simple web page where you paste your input and get a result back."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that language learning through real conversations with AI personas \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "CLI"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your cli supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically env variable manager with encrypted storage and team sharing."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Can work without auth for the basic stuff, but accounts unlock more features."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Clean web UI \u2014 nothing fancy, just works."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Combination \u2014 some user-provided, some fetched in real time."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a cli that env variable manager with encrypted storage and team sharing \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically contract template generator for freelancers using plain language."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Anyone who works remotely."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Honestly haven't thought that far yet, just want to build it first."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "It reads from the user's existing files or accounts with permission."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that contract template generator for freelancers using plain language \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Terminal app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your terminal app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It AI-powered shell history search and command suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a terminal app that AI-powered shell history search and command suggestions \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like visual diff tool for comparing two REST API responses \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Product managers and startup teams."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Needs accounts to save preferences and history."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that visual diff tool for comparing two REST API responses \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically prompt version control and A/B testing for LLM apps."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that prompt version control and A/B testing for LLM apps \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically connects developers with open-source projects matching their skills."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that connects developers with open-source projects matching their skills \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is changelog generator from GitHub releases and commit history."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "The AI understands nuance, not just keywords."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Needs accounts to save preferences and history."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "User sets preferences and the system filters results based on those."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "It reads from the user's existing files or accounts with permission."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a tool that changelog generator from GitHub releases and commit history \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is travel itinerary builder that pulls live prices from multiple sites."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that travel itinerary builder that pulls live prices from multiple sites \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Checks if a product has ethical sourcing certifications."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that checks if a product has ethical sourcing certifications \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It detects AI-generated content on any webpage."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that detects AI-generated content on any webpage \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like podcast episode planner with guest research and question generator \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Product managers and startup teams."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Solo tool, collaboration doesn't really fit the use case."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "User inputs it \u2014 mostly plain text preferences."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Mobile app with a simple home screen."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Free tier with a paid plan for heavy usage \u2014 classic freemium."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that podcast episode planner with guest research and question generator \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It real-time collaborative whiteboard for remote engineering teams."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that real-time collaborative whiteboard for remote engineering teams \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "VS Code extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your vs code extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like auto-generates unit tests from function signatures using AI \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Clean web UI \u2014 nothing fancy, just works."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Scraped from public sources and cleaned up before showing to the user."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Open source, maybe sponsorships later."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a vs code extension that auto-generates unit tests from function signatures using AI \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Desktop app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your desktop app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is syncs todos across Notion, Linear, and GitHub Issues."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a desktop app that syncs todos across Notion, Linear, and GitHub Issues \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Mobile app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your mobile app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically splits expenses among roommates and tracks who owes what."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's way simpler \u2014 most alternatives are bloated with features nobody uses."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "User sets preferences and the system filters results based on those."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "One-time purchase, no subscription."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Developers and tech-savvy people mainly."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a mobile app that splits expenses among roommates and tracks who owes what \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is API rate limit visualizer across all your integrated services."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Anyone who works remotely."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that API rate limit visualizer across all your integrated services \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It guided breathing and meditation sessions tied to heart rate data."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that guided breathing and meditation sessions tied to heart rate data \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically adds flashcard generation to any article you highlight."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "B2B \u2014 charge teams, not individuals."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Can work without auth for the basic stuff, but accounts unlock more features."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A script that I manually run, basically just to validate the idea works."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's personalized from day one instead of being generic."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that adds flashcard generation to any article you highlight \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "VS Code extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your vs code extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It explains any selected code block in plain English."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Developers and tech-savvy people mainly."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a vs code extension that explains any selected code block in plain English \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "CLI tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your cli tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It monitors your server logs and alerts you on anomalies via Slack."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "User sets preferences and the system filters results based on those."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a cli tool that monitors your server logs and alerts you on anomalies via Slack \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like feature flag manager with gradual rollout and kill-switch controls \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that feature flag manager with gradual rollout and kill-switch controls \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is blocks distracting sites based on your calendar events."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's way simpler \u2014 most alternatives are bloated with features nobody uses."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A simple web page where you paste your input and get a result back."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Small business owners who aren't very technical."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that blocks distracting sites based on your calendar events \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It tracks mental health patterns and surfaces insights over time."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Mobile app with a simple home screen."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that tracks mental health patterns and surfaces insights over time \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is AI personal trainer that adapts workouts based on daily energy levels."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Anyone who works remotely."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI personal trainer that adapts workouts based on daily energy levels \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Browser extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your browser extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is converts any webpage into a clean readable markdown file."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A working CLI tool that handles the main use case end to end."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "User inputs it \u2014 mostly plain text preferences."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a browser extension that converts any webpage into a clean readable markdown file \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically generates system design diagrams from plain English descriptions."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web tool that generates system design diagrams from plain English descriptions \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like home automation controller with plain-English voice commands \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Needs accounts to save preferences and history."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Honestly haven't thought that far yet, just want to build it first."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Mobile app with a simple home screen."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "Open source and privacy-first, unlike the commercial alternatives."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "It reads from the user's existing files or accounts with permission."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that home automation controller with plain-English voice commands \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "VS Code plugin"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your vs code plugin supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically live collaboration with voice annotations on code."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a vs code plugin that live collaboration with voice annotations on code \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically monorepo dependency graph with circular dependency detection."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a tool that monorepo dependency graph with circular dependency detection \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like detects AI-generated content on any webpage \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that detects AI-generated content on any webpage \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is home automation controller with plain-English voice commands."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Anyone who works remotely."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that home automation controller with plain-English voice commands \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Compares prices across 20 retailers in a sidebar popup."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Product managers and startup teams."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Mobile app with a simple home screen."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that compares prices across 20 retailers in a sidebar popup \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "CLI"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your cli supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is env variable manager with encrypted storage and team sharing."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a cli that env variable manager with encrypted storage and team sharing \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "CLI"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your cli supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like cross-platform script runner that works identically on Mac, Linux, Windows \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "User inputs it \u2014 mostly plain text preferences."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A simple web page where you paste your input and get a result back."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a cli that cross-platform script runner that works identically on Mac, Linux, Windows \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically AI music producer that suggests chord progressions and arrangements."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "It reads from the user's existing files or accounts with permission."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It automates a workflow that currently requires switching between 5 different apps."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "Browser extension that handles the one key action really well."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "B2B \u2014 charge teams, not individuals."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI music producer that suggests chord progressions and arrangements \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Lets groups vote on travel destinations and books the winner."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Scraped from public sources and cleaned up before showing to the user."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A script that I manually run, basically just to validate the idea works."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's way simpler \u2014 most alternatives are bloated with features nobody uses."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Free tier with a paid plan for heavy usage \u2014 classic freemium."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It automates a workflow that currently requires switching between 5 different apps."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that lets groups vote on travel destinations and books the winner \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Slack bot"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your slack bot supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is summarizes long threads into bullet points on demand."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "Open source and privacy-first, unlike the commercial alternatives."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Free tier with a paid plan for heavy usage \u2014 classic freemium."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Developers and tech-savvy people mainly."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a slack bot that summarizes long threads into bullet points on demand \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "CLI tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your cli tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is scans your codebase and suggests refactoring opportunities."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "User sets preferences and the system filters results based on those."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Anyone who works remotely."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A working CLI tool that handles the main use case end to end."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Can work without auth for the basic stuff, but accounts unlock more features."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "One-time purchase, no subscription."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a cli tool that scans your codebase and suggests refactoring opportunities \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is tracks your reading time across websites and summarizes monthly."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that tracks your reading time across websites and summarizes monthly \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like personal knowledge base that surfaces relevant notes using semantic search \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Small business owners who aren't very technical."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that personal knowledge base that surfaces relevant notes using semantic search \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like no-code fine-tuning platform for small language models \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Open source, maybe sponsorships later."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Pulls from third-party APIs automatically."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Solo tool, collaboration doesn't really fit the use case."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that no-code fine-tuning platform for small language models \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It API mocking tool for frontend devs to work without a backend."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It automates a workflow that currently requires switching between 5 different apps."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that API mocking tool for frontend devs to work without a backend \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Auto-labels training data using weak supervision techniques."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "No auth needed \u2014 it's fully local."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A working CLI tool that handles the main use case end to end."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Free tier with a paid plan for heavy usage \u2014 classic freemium."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a tool that auto-labels training data using weak supervision techniques \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Ai nutritionist that analyzes photos of your meals."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI nutritionist that analyzes photos of your meals \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It visual diff tool for comparing two REST API responses."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Solo tool, collaboration doesn't really fit the use case."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "It reads from the user's existing files or accounts with permission."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Open source, maybe sponsorships later."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A working CLI tool that handles the main use case end to end."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that visual diff tool for comparing two REST API responses \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Checks if a product has ethical sourcing certifications."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Can work without auth for the basic stuff, but accounts unlock more features."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Honestly haven't thought that far yet, just want to build it first."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "Just the core flow \u2014 input \u2192 AI processes \u2192 output. No bells and whistles."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that checks if a product has ethical sourcing certifications \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Shows estimated carbon footprint of websites you visit."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Free tier with a paid plan for heavy usage \u2014 classic freemium."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Scraped from public sources and cleaned up before showing to the user."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that shows estimated carbon footprint of websites you visit \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically symptom checker that suggests when to see a doctor vs wait."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Small business owners who aren't very technical."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that symptom checker that suggests when to see a doctor vs wait \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It tracks mental health patterns and surfaces insights over time."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Indie hackers and solo founders."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "Open source and privacy-first, unlike the commercial alternatives."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Solo tool, collaboration doesn't really fit the use case."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that tracks mental health patterns and surfaces insights over time \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It compares prices across 20 retailers in a sidebar popup."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "Browser extension that handles the one key action really well."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "User sets preferences and the system filters results based on those."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Combination \u2014 some user-provided, some fetched in real time."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "B2B \u2014 charge teams, not individuals."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that compares prices across 20 retailers in a sidebar popup \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is auto-scales cloud infra based on predicted traffic spikes."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Mobile app with a simple home screen."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a tool that auto-scales cloud infra based on predicted traffic spikes \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically collaborative worldbuilding tool for fiction writers."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that collaborative worldbuilding tool for fiction writers \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is uptime monitor with intelligent alerting and incident playbooks."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that uptime monitor with intelligent alerting and incident playbooks \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like AI nutritionist that analyzes photos of your meals \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Small business owners who aren't very technical."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Mobile app with a simple home screen."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "It reads from the user's existing files or accounts with permission."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "The AI understands nuance, not just keywords."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "No auth needed \u2014 it's fully local."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI nutritionist that analyzes photos of your meals \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is feature flag manager with gradual rollout and kill-switch controls."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Clean web UI \u2014 nothing fancy, just works."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that feature flag manager with gradual rollout and kill-switch controls \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is AI personal trainer that adapts workouts based on daily energy levels."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Uses AI, yeah \u2014 specifically an LLM to understand natural language inputs."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI personal trainer that adapts workouts based on daily energy levels \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically password manager that audits breach exposure in real time."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI to analyze inputs and give smart suggestions."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "No auth needed \u2014 it's fully local."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "Pulls from third-party APIs automatically."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "Open source and privacy-first, unlike the commercial alternatives."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that password manager that audits breach exposure in real time \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It AI personal trainer that adapts workouts based on daily energy levels."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Solo tool, collaboration doesn't really fit the use case."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A script that I manually run, basically just to validate the idea works."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Honestly haven't thought that far yet, just want to build it first."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's way simpler \u2014 most alternatives are bloated with features nobody uses."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI personal trainer that adapts workouts based on daily energy levels \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Budgeting tool that categorizes bank transactions automatically."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "Browser extension that handles the one key action really well."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "OAuth with Google or GitHub only, keeping it simple."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "College students and young professionals."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "B2B \u2014 charge teams, not individuals."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It works with the tools people already have instead of replacing them."
+      },
+      {
+        "role": "assistant",
+        "content": "Where does the data come from? Does the user input it, or does it pull from somewhere?"
+      },
+      {
+        "role": "user",
+        "content": "User inputs it \u2014 mostly plain text preferences."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that budgeting tool that categorizes bank transactions automatically \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is AI screenplay assistant that maintains character voice consistency."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that AI screenplay assistant that maintains character voice consistency \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is podcast episode planner with guest research and question generator."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It automates a workflow that currently requires switching between 5 different apps."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "Just a popup \u2014 minimal UI, like a floating panel."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that podcast episode planner with guest research and question generator \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yes exactly."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Chrome extension"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your chrome extension supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically shows the real cost of purchases in hours of work."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a chrome extension that shows the real cost of purchases in hours of work \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is meal planner that generates grocery lists from your dietary goals."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "No dedicated UI, it integrates into tools the user already uses."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Free tier with a paid plan for heavy usage \u2014 classic freemium."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "It uses AI but also lets users override with manual filters if they want."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Can work without auth for the basic stuff, but accounts unlock more features."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's personalized from day one instead of being generic."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that meal planner that generates grocery lists from your dietary goals \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "The core idea is AI nutritionist that analyzes photos of your meals."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Single-player for now, collaboration could be a v2 thing."
+      },
+      {
+        "role": "assistant",
+        "content": "What would the simplest MVP version look like?"
+      },
+      {
+        "role": "user",
+        "content": "A working CLI tool that handles the main use case end to end."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Needs accounts to save preferences and history."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "Open source and privacy-first, unlike the commercial alternatives."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Small business owners who aren't very technical."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "The user inputs what they want in plain text and the AI figures out the rest."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that AI nutritionist that analyzes photos of your meals \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "CLI"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your cli supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It env variable manager with encrypted storage and team sharing."
+      },
+      {
+        "role": "assistant",
+        "content": "What makes this different from existing tools out there?"
+      },
+      {
+        "role": "user",
+        "content": "It's personalized from day one instead of being generic."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Has real-time collaboration built in from the start."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Freelancers and consultants."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "Honestly haven't thought that far yet, just want to build it first."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Can work without auth for the basic stuff, but accounts unlock more features."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It integrates with existing tools via APIs and adds a layer of intelligence on top."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a cli that env variable manager with encrypted storage and team sharing \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "So like dependency update manager that auto-creates PRs with changelogs \u2014 that's the whole thing."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a tool that dependency update manager that auto-creates PRs with changelogs \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Exactly, you got it."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "App"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "It password manager that audits breach exposure in real time."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It runs in the background and surfaces relevant info at the right time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "AI for the core logic, but the UI is pretty simple and deterministic."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "It lives in the browser sidebar so it's always accessible."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a app that password manager that audits breach exposure in real time \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "That's a good way to put it, yes."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Web app"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your web app supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Basically budgeting tool that categorizes bank transactions automatically."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Anyone who works remotely."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It watches what the user does and learns their patterns over time."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Fully AI-driven."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a web app that budgeting tool that categorizes bank transactions automatically \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yep, that's the whole thing."
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "Tool"
+      },
+      {
+        "role": "assistant",
+        "content": "Ok what problem is your tool supposed to solve?"
+      },
+      {
+        "role": "user",
+        "content": "Monorepo dependency graph with circular dependency detection."
+      },
+      {
+        "role": "assistant",
+        "content": "Have you thought about how it would be monetized or distributed?"
+      },
+      {
+        "role": "user",
+        "content": "B2B \u2014 charge teams, not individuals."
+      },
+      {
+        "role": "assistant",
+        "content": "Is this single-player or does it have any collaborative features?"
+      },
+      {
+        "role": "user",
+        "content": "Shared workspaces but not real-time \u2014 more like async."
+      },
+      {
+        "role": "assistant",
+        "content": "What does the user interaction look like \u2014 is there a UI, a CLI, something else?"
+      },
+      {
+        "role": "user",
+        "content": "CLI first, but planning a web dashboard later."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it require user accounts or can it work without auth?"
+      },
+      {
+        "role": "user",
+        "content": "Needs accounts to save preferences and history."
+      },
+      {
+        "role": "assistant",
+        "content": "And who exactly is the target user for this?"
+      },
+      {
+        "role": "user",
+        "content": "Power users who want more control over their tools."
+      },
+      {
+        "role": "assistant",
+        "content": "And how does it actually solve that problem, like what's the mechanism?"
+      },
+      {
+        "role": "user",
+        "content": "It scrapes data from multiple sources and presents it in one place."
+      },
+      {
+        "role": "assistant",
+        "content": "Does it use AI or is it more rule-based / manual?"
+      },
+      {
+        "role": "user",
+        "content": "Mix of both \u2014 rule-based for the simple stuff, AI for the complex decisions."
+      },
+      {
+        "role": "assistant",
+        "content": "So what you're building is basically a tool that monorepo dependency graph with circular dependency detection \u2014 and the user interacts with it through a clean interface, setting their preferences so the AI can do the heavy lifting for them?"
+      },
+      {
+        "role": "user",
+        "content": "Yeah that's it."
+      }
+    ]
+  }
+]
