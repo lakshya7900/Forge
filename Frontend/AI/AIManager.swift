@@ -8,8 +8,8 @@
 import Foundation
 
 struct AIManager {
-//    static let apiKey = "AIzaSyDizs5bVijF483Ppuw95TkIKZR_YHCmSAc"
-    static let apiKey = ""
+    static let env = ProcessInfo.processInfo.environment
+    static let apiKey = env["GEMINI_API"] ?? "trace"
     static let model = "gemini-3-flash-preview"
     static let endpoint = "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent?key=\(apiKey)"
 
