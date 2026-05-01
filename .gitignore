@@ -8,3 +8,8 @@ Backend/.vscode/launch.json
 Backend/__debug_bin2615515111
 *.pbxproj
 /Forge.xcodeproj/xcuserdata/lakshya7900.xcuserdatad/xcdebugger
+.cache_ggshield
+Forge.xcodeproj/xcshareddata/xcschemes/Forge.xcscheme
+Forge.xcodeproj/xcuserdata/lakshya7900.xcuserdatad/xcschemes/xcschememanagement.plist
+*.plist
+*.xcbkptlist
